@@ -1,0 +1,38 @@
+public static boolean getNodePath(Node root, int key, Vector<Node> path){
+        
+        if(root == null){return false;}
+        
+        path.add(root);
+        if(root.data==key){
+            return true;   
+        }
+        
+        if(getNodePath(root.left, key, path) || getNodePath(root.right, key, path)){
+            return true;
+        }
+        
+        path.remove(root);
+        return false;        
+    }
+    
+	public static Node lca(Node root, int v1, int v2) {
+        Vector<Node> path1 = new Vector<>();
+        Vector<Node> path2 = new Vector<>();
+        
+        if(!getNodePath(root, v1, path1) || !getNodePath(root,v2, path2)){
+            return null;
+        }
+        
+        int pc;
+        int size = path1.size() <=path2.size() ? path1.size() : path2.size(); 
+        
+        for(pc=0; pc< size; pc++){
+            if(path1.elementAt(pc) != path2.elementAt(pc)){break;}        
+        }
+        
+        if(pc >= 1){
+        return path1.elementAt(pc-1);
+        }
+        else{
+            return path1.elementAt(pc);}
+    }
