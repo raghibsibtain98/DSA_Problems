@@ -1,0 +1,48 @@
+package com.shibu;
+
+import java.util.Scanner;
+
+class Node{
+    int data;
+    Node left;
+    Node right;
+    Node(int data){
+        this.data = data;
+    }
+}
+public class ConstructBST {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int[] preOrder = {10,2,1,13,11};
+        int index = 0;
+        int n = 5;
+        Node tree = constructBST(preOrder, index, preOrder[index], Integer.MIN_VALUE, Integer.MAX_VALUE, n);
+        preOrder(tree);
+    }
+    static Node constructBST(int[] preOrder, int index, int key, int min, int max, int n){
+        //static int index = 0;
+        if(index>=n){
+            return null;
+        }
+        Node root = null;
+        if(key>min && key<max){
+            root = new Node(key);
+            index++;
+
+            if(index<n){
+                root.left = constructBST(preOrder, index, preOrder[index], min, key, n);
+            }
+            if(index<n){
+                root.right = constructBST(preOrder, index, preOrder[index], key, max, n);
+            }
+        }
+        return root;
+    }
+
+    static void preOrder(Node root){
+        if(root==null){return;}
+        preOrder(root.left);
+        System.out.print(root.data + " ");
+        preOrder(root.right);
+    }
+}
