@@ -1,0 +1,34 @@
+package com.shibu;
+
+import java.util.*;
+
+public class SlidingWindow {
+    public static void main(String[] args) {
+        int[] a = {9,10,3,5,4,6};
+        System.out.println(slidingMax(a, 3));
+    }
+
+    static Deque<Integer> slidingMax(int[] a, int k)
+    {
+        Deque<Integer> vec = new LinkedList<>();
+        Deque<Integer> dq = new LinkedList<>();
+        for(int i = 0; i < k; i++){
+            while(!dq.isEmpty() && a[i]>a[dq.peekLast()]){
+                dq.removeLast();
+            }
+            dq.addLast(i);
+        }
+        vec.addLast(a[dq.peekFirst()]);
+        for(int i = k; i<a.length; i++){
+            if(dq.peekFirst()== i-k){
+                dq.removeFirst();
+            }
+            while(!dq.isEmpty() && a[i]>a[dq.peekLast()]){
+                dq.removeLast();
+            }
+            dq.addLast(i);
+            vec.addLast(a[dq.peekFirst()]);
+        }
+        return vec;
+    }
+}
