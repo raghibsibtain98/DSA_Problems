@@ -1,0 +1,42 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class PrefixEvaluation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        prefixEvaluation(str);
+    }
+    static void prefixEvaluation(String str){
+        Stack<Integer> stk = new Stack<>();
+        for(int i = str.length()-1; i>=0; i--){
+            if(str.charAt(i)>='0' && str.charAt(i)<='9'){
+                stk.push(str.charAt(i)-'0');
+            }
+            else{
+                int opLeft = stk.pop();
+                int opRight = stk.pop();
+                switch (str.charAt(i)){
+                    case '+':
+                        stk.push(opLeft+opRight);
+                        break;
+                    case '-':
+                        stk.push(opLeft-opRight);
+                        break;
+                    case '*':
+                        stk.push(opLeft*opRight);
+                        break;
+                    case '/':
+                        stk.push(opLeft/opRight);
+                        break;
+                    case '^':
+                        stk.push((int) Math.pow(opLeft,opRight));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        System.out.println(stk.pop());
+    }
+}
