@@ -1,0 +1,43 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class PostfixEvaluation {
+    public static void main(String[] args) {
+        Scanner sc= new Scanner(System.in);
+        String str = sc.nextLine();
+        postFixEvaluation(str);
+    }
+    static void postFixEvaluation(String str){
+        Stack<Integer> stk= new Stack<>();
+        for(int i = 0; i<str.length(); i++){
+            if(str.charAt(i)>='0' && str.charAt(i)<='9'){
+                stk.push( str.charAt(i)-'0');
+            }
+            else{
+                int opRight = stk.pop();
+                int opLeft = stk.pop();
+                switch (str.charAt(i)){
+                    case '+':
+                        stk.push(opLeft+opRight);
+                        break;
+                    case '-':
+                        stk.push(opLeft-opRight);
+                        break;
+                    case '*':
+                        stk.push(opLeft*opRight);
+                        break;
+                    case '/':
+                        stk.push(opLeft/opRight);
+                        break;
+                    case '^':
+                        stk.push((int) Math.pow(opLeft,opRight));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        System.out.println(stk.pop());
+    }
+}
+
