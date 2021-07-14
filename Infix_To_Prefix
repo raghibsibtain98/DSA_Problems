@@ -1,0 +1,51 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+public class InfixToPrefix {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        System.out.println(infixtoPrefix(str));
+    }
+    static int precedence(char c){
+        if(c=='^'){
+            return 3;
+        }
+        else if(c=='/' || c=='*'){
+            return 2;
+        }
+        else if(c=='+' || c=='-'){
+            return 1;
+        }
+        return -1;
+    }
+    static StringBuffer infixtoPrefix(String str){
+        Stack<Character> stk = new Stack<>();
+        StringBuffer result = new StringBuffer();
+        for(int i = str.length()-1; i>=0;i--){
+            if(str.charAt(i)>='0' && str.charAt(i)<='9' || str.charAt(i)>='a' && str.charAt(i)<='z' || str.charAt(i)>='A' && str.charAt(i)<='Z'){
+                result.append(str.charAt(i));
+            }
+            else if(str.charAt(i)==')'){
+                stk.push(str.charAt(i));
+            }
+            else if(str.charAt(i)=='('){
+                while(!stk.isEmpty() && stk.peek()!=')'){
+                    result.append(stk.pop());
+                }
+                if(!stk.isEmpty()){stk.pop();}
+            }
+            else{
+                while(!stk.isEmpty() && precedence(str.charAt(i))<=precedence(stk.peek())){
+                    result.append(stk.pop());
+                }
+                stk.push(str.charAt(i));
+            }
+        }
+        while(!stk.isEmpty()){
+            result.append(stk.pop());
+        }
+        return result.reverse();
+    }
+
+}
