@@ -1,0 +1,43 @@
+package com.shibu;
+
+import java.util.Arrays;
+//1,2,4,8,9
+
+
+public class MaximiseMinDistance {
+    public static void main(String[] args) {
+        int[] a = {1, 2, 4, 8, 9};
+        System.out.println(maximise(a,a.length, 3));
+    }
+    static int maximise(int a[], int n, int k){
+        Arrays.sort(a);
+
+        int left = a[0];
+        int right = a[n-1];
+        int result = -1;
+
+        while(left < right){
+            int mid = (left+right)/2;
+            if(isFeasible(a, mid, k)){
+                left = mid+1;
+                result = Math.max(result, mid);
+            }else{
+                right = mid;}
+        }
+        return result;
+    }
+
+    static boolean isFeasible(int[] a, int mid, int k){
+        int pos = a[0], element = 1;
+        for(int i = 1; i<a.length; i++){
+            if(a[i]-pos>=mid){
+                element++;
+                pos = a[i];
+                if(element==k){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
