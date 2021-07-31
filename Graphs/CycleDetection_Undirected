@@ -1,0 +1,61 @@
+package com.shibu;
+
+import java.util.LinkedList;
+import java.util.Scanner;
+
+class GraphUndirected{
+    LinkedList<Integer>[] adj;
+    GraphUndirected(int vertices){
+        adj = new LinkedList[vertices];
+        for(int i = 0; i<vertices; i++){
+            adj[i] = new LinkedList<>();
+        }
+    }
+    void addEdge(int start, int destination){
+        adj[start].add(destination);
+        adj[destination].add(start); //since it is undirected so both sides connection
+    }
+    boolean detection(LinkedList<Integer>[] adj, int vertices){
+        boolean cycle = false;
+        boolean[] visited = new boolean[adj.length];
+        int[] parent = new int[adj.length];
+        parent[0] = -1;
+        for(int i  = 0; i<vertices; i++){
+            if(!visited[i] && iscycle(i,adj,visited,parent[i])){
+                cycle = true;
+                break;
+            }
+        }
+        return cycle;
+    }
+    boolean iscycle(int source, LinkedList<Integer>[] adj, boolean[] visited, int parent){
+        visited[source] = true;
+        for(int neighbour:adj[source]){
+            if(neighbour!=parent){
+                if(visited[neighbour]){
+                    return true;
+                }
+                if(!visited[neighbour] && iscycle(neighbour, adj, visited, source)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+public class CycleDetectionUndirected {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the vertices and edges: ");
+        int vertices = sc.nextInt();
+        int edges = sc.nextInt();
+        GraphUndirected grp = new GraphUndirected(vertices);
+        System.out.println("Enter edges: ");
+        for(int i = 0; i<edges; i++){
+            int start = sc.nextInt();
+            int dest = sc.nextInt();
+            grp.addEdge(start,dest);
+        }
+        System.out.println(grp.detection(grp.adj, vertices));
+    }
+}
