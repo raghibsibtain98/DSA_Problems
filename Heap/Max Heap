@@ -1,0 +1,85 @@
+package com.shibu;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+import static java.util.Collections.swap;
+
+public class MaxHeap {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Integer> arr = new ArrayList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.poll();
+        int queries = sc.nextInt();
+        for(int i = 0; i<queries; i++){
+            int q = sc.nextInt();
+            switch(q){
+                case(1):
+                    int toInsert = sc.nextInt();
+                    insertHeap(arr, toInsert);
+
+                    break;
+                case(2):
+                    int toDelete = sc.nextInt();
+                    deleteHeap(arr, toDelete);
+                    break;
+                case(3):
+                    System.out.println(findMinimum(arr));
+                    System.out.println(arr);
+                    break;
+                default:
+                    System.out.println("Invalid");
+                    break;
+            }
+        }
+    }
+
+    static void insertHeap(ArrayList<Integer> arr, int value){
+        if(arr.size()==0){
+            arr.add(value);
+            return;
+        }
+        int n = arr.size()-1;
+        arr.add(value);
+        int i = (n-1)/2;
+        while(arr.get(i)<value && i>=0){
+            swap(arr,i,n);
+            n = i;
+            i = (i-1)/2;
+        }
+    }
+    static int findMinimum(ArrayList<Integer> arr){
+        int min = arr.get(0);
+        for(int element: arr){
+            if(element<min){
+                min = element;
+            }
+        }
+        return min;
+    }
+
+    static void deleteHeap(ArrayList<Integer> arr, int value){
+        int toRemove = arr.indexOf(value);
+        arr.add(toRemove,arr.get(arr.size()-1));
+        arr.remove(arr.size()-1);
+        int i = toRemove;
+        int larger = arr.get(i);
+        while(i<arr.size()){
+            int l = (2*i)+1;
+            int r = (2*i)+2;
+            if(l<arr.size() && arr.get(i)<arr.get(l)){
+                larger = arr.get(l);
+                swap(arr, i, l);
+                i = l;
+            }
+            if(r<arr.size() && arr.get(i)<arr.get(r)){
+                larger = arr.get(r);
+                swap(arr, i, r);
+                i = r;
+            }
+        }
+    }
+}
