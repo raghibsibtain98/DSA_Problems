@@ -1,0 +1,54 @@
+package com.shibu;
+
+import java.util.Collections;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class KLargestSmallestElement {
+    public static void main(String[] args) {
+        int[] a = {20, 10, 60, 30, 50, 40};
+        int size = a.length;
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the value of K: ");
+        int k = sc.nextInt();
+        System.out.print("Enter 1 for largest, 2 for smallest: ");
+        int choice = sc.nextInt();
+        switch (choice){
+            case(1):
+                System.out.println(kLargest(a, k, size));
+                break;
+            case(2):
+                System.out.println(kSmallest(a,k ,size));
+                break;
+            default:
+                break;
+        }
+    }
+    static int kLargest(int[] a, int k, int n){
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int i = 0; i<k; i++){
+            pq.add(a[i]);
+        }
+        for(int i = k; i<n; i++){
+            if(pq.peek()<a[i]){
+                pq.poll();
+                pq.add(a[i]);
+            }
+        }
+        return pq.peek();
+
+    }
+    static int kSmallest(int[] a, int k, int n){
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for(int i=0; i<k; i++){
+            pq.add(a[i]);
+        }
+        for(int i=k; i<n; i++){
+            if(pq.peek()>a[i]){
+                pq.poll();
+                pq.add(a[i]);
+            }
+        }
+        return pq.peek();
+    }
+}
