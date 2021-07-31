@@ -1,0 +1,26 @@
+package com.shibu;
+
+public class IdenticalBT {
+    public static void main(String[] args) {
+        Node root = new Node(2);
+        root.right = new Node(1);
+        root.right.left = new Node(3);
+
+        Node root1 = new Node(2);
+        root1.right = new Node(1);
+        root1.right.left = new Node(3);
+//        Node root1 = new Node(2);
+//        root1.left = new Node(1);
+//        root1.right = new Node(3);
+        System.out.println(identicalBT(root, root1));
+    }
+    static boolean identicalBT(Node root1, Node root2){ //satisfy 3 conditions root.data is equal root.left.data is
+                                                        // equal and root.right.data is equal
+        if(root1==null && root2==null){return true;}
+        if(root1==null || root2==null){return false;}
+        if(root1.data == root2.data){
+            return identicalBT(root1.left, root2.left) && identicalBT(root1.right, root2.right);
+        }
+        return false;
+    }
+}
