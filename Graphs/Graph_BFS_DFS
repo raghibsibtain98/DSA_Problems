@@ -1,0 +1,106 @@
+package com.shibu;
+
+import java.sql.SQLOutput;
+import java.util.*;
+
+class Graph{
+    LinkedList<Integer>[] adj;
+    Graph(int v){
+        adj = new LinkedList[v];
+        for(int i=0; i<v; i++) {
+            adj[i] = new LinkedList<Integer>();
+        }
+    }
+    public void addEdge(int start, int destination){
+        adj[start].add(destination);
+        adj[destination].add(start);
+    }
+
+    public int bfs(int source, int destination){
+        boolean[] visited = new boolean[adj.length];
+        int[] parent = new int[adj.length];
+        Queue<Integer> q = new LinkedList<>();
+
+        q.add(source);
+        parent[source] = -1;
+        visited[source] = true;
+
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            if(curr==destination) break;
+            for(int neighbour: adj[curr]){
+                if(!visited[neighbour]) {
+                    q.add(neighbour);
+                    visited[neighbour] = true;
+                    parent[neighbour] = curr;
+                }
+            }
+        }
+        int curr = destination; //now we'll start going back from dest until we find the -1 parent.
+        int distance = 0;
+        while(parent[curr]!=-1){
+            System.out.print(curr+"->");
+            curr = parent[curr];
+            distance++;
+        }
+        return distance;
+    }
+    public boolean dfsStack(int start, int destination){
+        boolean visited[] = new boolean[adj.length];
+        Stack<Integer> stk= new Stack<>();
+        stk.push(start);
+        visited[start] = true;
+         while (!stk.isEmpty()){
+             int curr= stk.pop();
+             if(curr==destination) return true;
+             for(int neighbour: adj[curr]){
+                 if(!visited[neighbour]){
+                     visited[neighbour] = true;
+                     stk.push(neighbour);
+                 }
+             }
+         }
+         return false;
+    }
+    private boolean dfsUtil(int start, int destination, boolean visited[]){
+        if(start==destination){return true;}
+
+        for(int neighbour: adj[start]){
+            if(!visited[neighbour]){
+                visited[neighbour] = true;
+                boolean isConnected = dfsUtil(neighbour, destination, visited);
+                if(isConnected) return true;
+            }
+        }
+        return false;
+    }
+    public boolean dfs(int start, int destination){
+        boolean[] visited = new boolean[adj.length];
+        visited[start] = true;
+        return dfsUtil(start, destination, visited);
+    }
+}
+
+public class GraphAdjacency {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter no of vertices: ");
+        int vert = sc.nextInt();
+        System.out.print("Enter no of edges: ");
+        int edge = sc.nextInt();
+        Graph grp = new Graph(vert);
+        for(int i = 0; i<edge; i++){
+            int start = sc.nextInt();
+            int dest = sc.nextInt();
+            grp.addEdge(start,dest);
+        }
+        System.out.println("Enter source and destination: ");
+        int source = sc.nextInt();
+        int dest = sc.nextInt();
+        //System.out.println("Minimum Distance is: "+ grp.bfs(source,dest));
+        //System.out.print("Path Possible: " + grp.dfs(source , dest));
+        System.out.print("Path Possible: " + grp.dfsStack(source , dest));
+    }
+
+
+}
