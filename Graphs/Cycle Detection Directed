@@ -1,0 +1,51 @@
+package com.shibu;
+
+import java.util.LinkedList;
+import java.util.Scanner;
+
+class GraphDirected extends Graph{
+    GraphDirected(int v) {
+        super(v);
+    }
+    public void addEdge(int start, int destination){
+        adj[start].add(destination);
+    }
+    public boolean detection(LinkedList<Integer>[] adj){
+        boolean[] visited = new boolean[adj.length];
+        for(int i = 0; i<adj.length; i++){
+            if(!visited[i] && iscycle(i, adj, visited, -1)){
+                return true;
+            }
+        }
+        return false;
+    }
+    boolean iscycle(int src, LinkedList<Integer>[] adj, boolean[] visited, int parent){
+        visited[src] = true;
+        for(int neighbor: adj[src]){
+            if(visited[neighbor]){
+                return true;
+            }
+            if(!visited[neighbor] && iscycle(neighbor, adj, visited, src)){
+                return true;
+            }
+        }
+        visited[src] = false;
+        return false;
+    }
+}
+public class CycleDetectionDirected {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the vertices and edges: ");
+        int vertices = sc.nextInt();
+        int edges = sc.nextInt();
+        GraphDirected grp = new GraphDirected(vertices);
+        System.out.println("Enter edges: ");
+        for(int i = 0; i<edges; i++){
+            int start = sc.nextInt();
+            int dest = sc.nextInt();
+            grp.addEdge(start,dest);
+        }
+        System.out.println(grp.detection(grp.adj));
+    }
+}
