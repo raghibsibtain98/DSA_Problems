@@ -1,0 +1,74 @@
+import java.util.*;
+
+class Result {
+
+    public static LinkedList<Integer>[] adj;
+    public static List<Integer> componentsInGraph(List<List<Integer>> gb) {
+
+        PriorityQueue<Integer> min = new PriorityQueue<>();
+        PriorityQueue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());
+        List<Integer> ret = new LinkedList<>();
+        adj = new LinkedList[(gb.size()*2)+1];
+        for(int i = 0; i<=gb.size()*2; i++){
+            adj[i] = new LinkedList<>();
+        }
+        for(int i = 0; i<gb.size(); i++){
+            addEdge(gb.get(i).get(0), gb.get(i).get(1));
+        }
+
+        boolean[] visited = new boolean[adj.length];
+
+        for(int i = 0; i<adj.length; i++){
+            //visited[i] = true;
+            int count = 0;
+            if(!visited[i]){
+                count = isConnected(adj, i, visited, count);
+                min.add(count);
+                max.add(count);
+            }
+            if(min.peek()==1){
+                min.poll();
+            }
+            if(max.peek()==1){
+                max.poll();
+            }
+        }
+        ret.add(min.peek());
+        ret.add(max.peek());
+        return ret;
+    }
+    public static void addEdge(int start, int destination){
+        adj[start].add(destination);
+        adj[destination].add(start);
+    }
+
+    public static int isConnected(LinkedList<Integer>[] adj, int src, boolean[] visited, int count){
+        visited[src] = true;
+        count++;
+        for(int neighbour: adj[src]){
+            if(!visited[neighbour]){
+                count+= isConnected(adj,neighbour, visited, 0);
+                visited[neighbour] = true;
+            }
+        }
+        return count;
+    }
+}
+public class Test{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<List<Integer>> a = new LinkedList<>();
+
+        for(int i = 0; i<40; i++){
+            List<Integer> b = new LinkedList<>();
+            for(int j = 0; j<2; j++){
+                b.add(sc.nextInt());
+            }
+            a.add(b);
+        }
+        List<Integer> res = Result.componentsInGraph(a);
+        
+        System.out.println(res);
+    }
+}
+
