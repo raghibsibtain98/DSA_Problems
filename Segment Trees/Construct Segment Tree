@@ -1,0 +1,32 @@
+package com.shibu;
+
+import java.util.Scanner;
+
+public class ConstructSegmentTree {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int size = sc.nextInt();
+        int[] a = new int[size];
+        int height = (int) Math.ceil((Math.log10(Double.valueOf(size))/Math.log10(2))+1);
+        int st_size = (int)Math.pow(2,height);
+        int[] st = new int[st_size];
+        for(int i = 0; i<size; i++){
+            a[i] = sc.nextInt();
+        }
+        constructST(a, 0, st, 0, size-1);
+        for(int i = 0; i<st.length; i++){
+            System.out.print(st[i] + " ");
+        }
+
+    }
+    static int constructST(int[] a, int si, int[] st, int left, int right){
+        if(left==right){ //for leaf nodes
+            st[si] = a[left];
+            return a[left];
+        }
+        int mid = (left+right)/2;
+        st[si] = constructST(a, (2 * si + 1), st, left, mid) + constructST(a, (2 * si + 2), st, mid + 1, right);
+        return st[si];
+    }
+    
+}
