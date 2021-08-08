@@ -1,0 +1,113 @@
+package com.shibu;
+
+import java.util.*;
+
+class Cell{
+    int i,j;
+    Cell(int i , int j){
+        this.i = i;
+        this.j = j;
+    }
+}
+
+public class CastleOnGrid {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int size = sc.nextInt();
+        int goalX = sc.nextInt();
+        int goalY = sc.nextInt();
+        int startX = sc.nextInt();
+        int startY = sc.nextInt();
+        char[][] ch = new char[size][size];
+        char[][] color = new char[size][size];
+        Cell[][] arr = new Cell[size][size];
+        for(int i = 0; i<size; i++){
+            String str = sc.next();
+            for(int j = 0; j<size; j++){
+                ch[i][j] = str.charAt(j);
+                color[i][j] = 'W';
+            }
+        }
+        bfs(startX,startY,goalX,goalY,ch,color,arr);
+        Stack<Cell> stk = new Stack<>();
+        stk.push(arr[goalX][goalY]);
+        int count = 1;
+        /*for(int i = 0;i<color.length; i++){
+            for(int j = 0; j<color[0].length; j++){
+                System.out.print(color[i][j]+" ");
+            }
+            System.out.println("");
+        }*/
+        Cell temp = stk.peek();
+        while((temp.i != startX) || (temp.j != startY)){
+            stk.push(arr[temp.i][temp.j]);
+            temp = stk.peek();
+            count++;
+        }
+        System.out.println(count);
+    }
+
+    static void bfs(int startX, int startY, int goalX, int goalY, char[][] ch, char[][] color, Cell[][] arr){
+        Queue<Cell> q = new LinkedList<Cell>();
+        Cell cell = new Cell(startX, startY);
+        q.add(cell);
+
+
+        while(!q.isEmpty()) {
+            Cell temp = q.poll();
+            int i = temp.i;
+            int j = temp.j;
+            color[i][j] = 'R';
+
+            for (int k = i + 1; k < ch.length; k++) { //1
+                if (ch[k][j] == 'X') {
+                    break;
+                }
+                if (color[k][j] == 'W') {
+                    color[k][j] = 'G';
+                    arr[k][j] = temp;
+                    Cell t = new Cell(k, j);
+                    q.add(t);
+                }
+            }
+
+            for (int k = i - 1; k>-1; k--) { //2
+               if (ch[k][j] == 'X') {
+                   break;
+               }
+               if (color[k][j] == 'W') {
+                   color[k][j] = 'G';
+                   arr[k][j] = temp;
+                   Cell t = new Cell(k, j);
+                   q.add(t);
+               }
+            }
+
+            for (int k = j + 1; k < ch[0].length; k++) { //3
+                if (ch[i][k] == 'X') {
+                    break;
+                }
+                if (color[i][k] == 'W') {
+                    color[i][k] = 'G';
+                    arr[i][k] = temp;
+                    Cell t = new Cell(i, k);
+                    q.add(t);
+                }
+            }
+
+            for (int k = j - 1; k >-1; k--) { //4
+                if (ch[i][k] == 'X') {
+                    break;
+                }
+                if (color[i][k] == 'W') {
+                    color[i][k] = 'G';
+                    arr[i][k] = temp;
+                    Cell t = new Cell(i, k);
+                    q.add(t);
+                }
+            }
+        }
+    }
+}
+
