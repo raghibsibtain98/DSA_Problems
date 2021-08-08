@@ -1,0 +1,40 @@
+package com.shibu;
+
+import java.util.*;
+
+public class DowntoZero {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int number = sc.nextInt();
+        System.out.println(downtoZero(number));
+    }
+    static int downtoZero(int n){
+        Queue<Integer> q = new LinkedList<>();
+        q.add(n);
+        int[] dp = new int[1000001];
+        Arrays.fill(dp,0);
+        dp[n] = 0;
+
+        while(!q.isEmpty()){
+            int current = q.poll();
+
+            if(current==0){
+                break;
+            }
+
+            if(dp[current-1]==0){
+                dp[current-1] = dp[current] + 1;
+                q.add(current-1);
+            }
+
+            for(int i = (int)Math.sqrt(current); i>=2; i--){
+                if(current%i==0 && dp[current/i]==0){
+                    dp[current/i] = dp[current] + 1;
+                    q.add(current/i);
+                }
+            }
+        }
+        return dp[0];
+    }
+
+}
