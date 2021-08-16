@@ -1,0 +1,27 @@
+import java.util.Scanner;
+
+public class StringAppend {
+    static boolean isPalindrome(char[] s){
+        int ptr1 = 0;
+        int ptr2 = s.length - 1;
+        while(ptr2>=ptr1){
+            if(s[ptr1] != s[ptr2]){
+                return false;
+            }
+            ptr1++;
+            ptr2--;
+        }
+        return true;
+    }
+    static int minAppends(String s){
+        if(isPalindrome(s.toCharArray())){
+            return 0;
+        }
+        return 1+ minAppends(s.substring(1));
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        System.out.println(minAppends(str));
+    }
+}
