@@ -1,0 +1,34 @@
+package com.shibu;
+import java.util.*;
+
+public class CoinChange{
+    static int minCoins(int value, int[] coins, int[] dp){
+        if(value==0){
+            return 0;
+        }
+        int ans = Integer.MAX_VALUE;
+        for(int i = 0; i<coins.length; i++){
+            if(value-coins[i]>=0) {
+                int subAns = 0;
+                if (dp[value - coins[i]] != -1) {
+                    subAns = dp[value - coins[i]];
+                } else {
+                    subAns = minCoins(value - coins[i], coins, dp);
+                }
+                if(subAns+1<ans) {
+                    ans = subAns + 1;
+                }
+            }
+        }
+        dp[value] = ans;
+        return dp[value];
+    }
+    public static void main(String[] args) {
+        int value = 18;
+        int[] coins = {7,5,1};
+        int[] dp = new int[value+1];
+        Arrays.fill(dp,-1);
+        dp[0] = 0;
+        System.out.println(minCoins(value,coins,dp));
+    }
+}
