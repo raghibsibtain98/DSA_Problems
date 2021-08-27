@@ -1,0 +1,43 @@
+package com.shibu;
+
+import java.util.*;
+
+public class VowelSwap {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        StringBuffer res = new StringBuffer(str.length());
+        int k = 0;
+        int count = 1;
+        Stack<Character> stk = new Stack<>();
+        for(int i = 0; i<str.length(); i++){
+            char ch = str.charAt(i);
+            if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U'){
+                if(stk.peek()!= 'a' && stk.peek()!= 'e' && stk.peek()!= 'i' && stk.peek()!= 'o' && stk.peek()!= 'u' && stk.peek()!= 'A' && stk.peek()!= 'E' && stk.peek()!= 'I' && stk.peek()!= 'O' && stk.peek()!= 'U' && stk.peek()!=' '){
+                    char cons = stk.peek();
+                    stk.push(cons);
+                    stk.push(ch);
+                    res.deleteCharAt(i-1);
+                    res.append(ch);
+                    res.append(cons);
+                }
+                else{
+                    stk.push(ch);
+                    res.append(ch);
+                }
+                count++;
+            }
+            else if(ch == ' '){
+                stk.push(' ');
+                res.append(count);
+                count=1;
+            }
+            else{
+                stk.push(ch);
+                res.append(ch);
+            }
+
+        }
+        System.out.println(res);
+    }
+}
