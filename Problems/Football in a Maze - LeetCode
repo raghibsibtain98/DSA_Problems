@@ -1,0 +1,68 @@
+package com.shibu;
+import java.util.*;
+class Pair{
+    int x, y;
+    Pair(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
+public class FootballInMaze {
+    static boolean footballMaze(int[][] maze, int[] start, int[] destination){
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(start[0], start[1]));
+        int row = maze.length;
+        int col = maze[0].length;
+        boolean[][] visited = new boolean[row][col];
+        for(int i = 0;i<row; i++){
+            Arrays.fill(visited[i],false);
+        }
+        visited[start[0]][start[1]] = true;
+        while(!q.isEmpty()){
+            Pair p = q.peek();
+            q.poll();
+            int x = p.x;
+            int y = p.y;
+            if(x==destination[0] && y==destination[1]){
+                return true;
+            }
+            int[] dx = {-1,0,1,0};
+            int[] dy = {0,-1,0,1};
+            for(int i = 0; i<4; i++){
+                int newX = x, newY = y;
+                while(newX<row && newY<col && newX>=0 && newY>=0 && maze[newX][newY]==0){
+                    newX+= dx[i];
+                    newY+= dy[i];
+                }
+                newX = newX - dx[i];
+                newY = newY - dy[i];
+                if(!visited[newX][newY]){
+                    visited[newX][newY] = true;
+                    q.add(new Pair(newX, newY));
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int row = sc.nextInt();
+        int col = sc.nextInt();
+        int[][] maze = new int[row][col];
+        for(int i = 0; i<row; i++){
+            for(int j=0; j<col;j++){
+                maze[i][j] = sc.nextInt();
+            }
+        }
+        int[] destination = new int[2];
+        int[] start = new int[2];
+        for(int i=0; i<2;i++){
+            start[i] = sc.nextInt();
+        }
+        for(int i=0; i<2;i++){
+            destination[i] = sc.nextInt();
+        }
+        System.out.println(footballMaze(maze,start,destination));
+    }
+}
