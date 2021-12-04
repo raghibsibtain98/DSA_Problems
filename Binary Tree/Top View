@@ -1,0 +1,59 @@
+package com.shibu;
+
+import java.util.*;
+
+class PairTree{
+    Node node;
+    int dist;
+    PairTree(Node node, int dist){
+        this.node = node;
+        this.dist = dist;
+    }
+}
+
+public class TopViewBT {
+    static TreeMap<Integer,Integer> mp = new TreeMap<>(); //gives sorted values
+    public static void topViewUtil(Node root, TreeMap<Integer,Integer> mp, int steps){
+        /*if(root==null){ //dfs approach
+            return;
+        }
+        mp.putIfAbsent(steps,root);
+        topViewUtil(root.left,mp,steps-1);
+        topViewUtil(root.right,mp,steps+1);*/
+
+        //bfs approach
+        Queue<PairTree> q = new LinkedList<>();
+        q.add(new PairTree(root, 0));
+        while(!q.isEmpty()){
+            Node n = q.peek().node;
+            int dist = q.peek().dist;
+            q.poll();
+
+            if(!mp.containsKey(dist)){
+                mp.put(dist, n.data);
+            }
+            if(n.left!=null){
+                q.add(new PairTree(n.left,dist-1));
+            }
+            if(n.right!=null){
+                q.add(new PairTree(n.right,dist+1));
+            }
+        }
+        for(Integer value: mp.values()){
+            System.out.print(value + " ");
+        }
+
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Node root = new Node(sc.nextInt());
+        root.left = new Node(sc.nextInt());
+        root.right = new Node(sc.nextInt());
+        root.right.left = new Node(sc.nextInt());
+        root.right.left.right = new Node(sc.nextInt());
+        root.right.left.right.right = new Node(sc.nextInt());
+        root.right.left.right.right.left = new Node(sc.nextInt());
+        root.right.left.right.right.right = new Node(sc.nextInt());
+        topViewUtil(root,mp,0);
+    }
+}
