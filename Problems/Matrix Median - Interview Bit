@@ -1,0 +1,35 @@
+public class Solution {
+    public int countNumbers(ArrayList<> row, int mid){
+        int low = 1, high = row.size();
+        while(high>=low){
+            int md = (high + low) / 2;
+            if(row.get(md)<=mid){
+                low = md + 1;
+            }
+            else{
+                high = md - 1;
+            }
+        }
+        return low;
+    }
+    public int findMedian(ArrayList<ArrayList<Integer>> A) {
+        int low = 1;
+        int high = 10^9;
+        int row = A.size();
+        int col = A.get(0).size();
+        while(high>=low){
+            int mid = (low + high)/2;
+            int count = 0;
+            for(int i = 0; i<row; i++){
+                count += countNumbers(A.get(i), mid);
+            }
+            if(count <= (row*col)/2)){
+                low = mid + 1;
+            }
+            else{
+                high = mid - 1;
+            }
+        }
+        return low;
+    }
+}
