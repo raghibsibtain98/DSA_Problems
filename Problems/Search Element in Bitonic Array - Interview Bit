@@ -1,0 +1,40 @@
+public class Solution {
+    public int solve(ArrayList<Integer> A, int B) {
+        int low1 = 0, high2 = A.size()-1;
+        int high1 = 0, low2 = 0;
+        for(int i = 0; i<A.size()-1; i++){
+            if(A.get(i)>A.get(i+1)){
+                high1 = i;
+                low2 = i+1;
+                break;
+            }
+        }
+        while(low1<=high1){
+            int mid1 = (low1+high1) / 2;
+            if(A.get(mid1)==B){
+                return mid1;
+            }
+            else if(A.get(mid1)<B){
+                low1 = mid1 + 1;
+            }
+            else{
+                high1 = mid1 - 1;
+            }
+        }
+        
+        while(low2<=high2){
+            int mid2 = (low2 + high2) / 2;
+            if(A.get(mid2)==B){
+                return mid2;
+            }
+            else if(A.get(mid2)>B){
+                low2 = mid2 + 1;
+            }
+            else{
+                high2 = mid2 - 1;
+            }
+        }
+        return -1;
+
+    }
+}
