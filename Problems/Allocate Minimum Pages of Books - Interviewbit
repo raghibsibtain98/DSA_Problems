@@ -1,0 +1,46 @@
+public class Solution {
+    public boolean isPossible(ArrayList<Integer> A, int B, int barrier){
+        
+        int pages = 0;
+        int count = 1;
+        for(int i = 0; i<A.size(); i++){
+            if(barrier<A.get(i)){
+                return false;
+            }
+            if(barrier >= A.get(i)+pages){
+                pages += A.get(i);
+            }
+            else{
+                pages = A.get(i);
+                count++;
+            }
+        }
+        if(count>B){
+            return false;
+        }
+        return true;
+    }
+    public int books(ArrayList<Integer> A, int B) {
+        if(B>A.size()){
+            return -1;
+        }
+        int low = A.get(0);
+        int high = 0;
+        int res = -1;
+        for(int i = 0; i<A.size(); i++){
+            high += A.get(i);
+            low = Math.min(low,A.get(i));
+        } 
+        while(low<=high){
+            int mid = (low+high)/2;
+            if(isPossible(A,B,mid)){
+                high = mid - 1;
+                res = mid;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        return res;
+    }
+}
