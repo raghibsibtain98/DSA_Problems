@@ -1,0 +1,30 @@
+public class Solution {
+    public int solve(ArrayList<Integer> A, int B) {
+        Map<Integer, Integer> mp = new HashMap<>();
+        int xorr = 0;
+        int count = 0;
+        int n = A.size();
+        for(int i = 0; i<n; i++){
+
+            xorr = xorr ^ A.get(i);
+
+            if(!mp.containsKey(xorr)){
+            
+               mp.put(xorr , 1); 
+            }
+            else{
+                mp.put(xorr, (mp.get(xorr)) + 1);
+            }
+
+            if( mp.get(xorr^B) != null ){
+                count+= mp.get(xorr^B);
+            }
+
+            if(xorr==B){
+                count++;
+            }
+
+        }
+        return count;
+    }
+}
