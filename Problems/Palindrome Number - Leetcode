@@ -1,0 +1,38 @@
+class Solution {
+    public boolean isPalindrome(int x) {
+        ///*String str = Integer.toString(x);
+        int right = str.length()-1;
+        int left = 0;
+        while(left<=right){
+            
+            if(str.charAt(left)!=str.charAt(right)){
+                return false;
+            }
+            left++;
+            right--;
+            
+        }
+        return true;*///
+        if(x<0) return false;
+        if(x==0) return true;
+        
+        int divisor = 1;
+        int n = x;
+        while(n/divisor >= 10){
+            divisor *= 10;
+        }
+        
+        while(n != 0){
+            int firstDigit = n/divisor;
+            int lastDigit = n%10;
+            
+            if(firstDigit!= lastDigit) return false;
+            
+            n = n%divisor;
+            n = n/10;
+        
+            divisor = divisor/100;
+        }
+        return true;
+    }
+}
