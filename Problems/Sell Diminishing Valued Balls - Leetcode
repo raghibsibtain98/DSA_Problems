@@ -1,0 +1,24 @@
+//Brute Force
+class Solution {
+   public int maxProfit(int[] inventory, int orders) {
+        double profit = 0;
+        while(orders > 0){
+            int max = Integer.MIN_VALUE;
+            int index = 0;
+            for(int i = 0 ; i<inventory.length; i++){
+                if(inventory[i]>max){
+                    max = inventory[i];
+                    index = i;
+                }
+            }
+            
+            inventory[index]--;
+            profit += max;
+            profit %= 1000000007;
+            orders--;
+        }
+        return (int)profit;           
+        
+    }
+}
+
