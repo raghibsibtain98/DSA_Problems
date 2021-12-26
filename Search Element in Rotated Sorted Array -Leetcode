@@ -1,0 +1,17 @@
+class Solution {
+    public int findMin(int[] nums) {
+        int lowest = Integer.MAX_VALUE;
+        for(int i = 0; i<nums.length-1; i++){
+            if(nums[i+1]<nums[i]){
+                lowest = i+1;
+                break;
+            }
+        }
+        
+        if(lowest==Integer.MAX_VALUE){
+            return nums[0];
+        }
+      
+        return nums[lowest];                   
+    }       
+}
