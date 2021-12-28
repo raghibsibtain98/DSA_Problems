@@ -1,0 +1,44 @@
+class BFANode{
+    int s;
+    int d;
+    int weight;
+    BFANode(int s, int d, int weight){
+        this.s = s;
+        this.d = d;
+        this.weight = weight;
+    }
+}
+
+public class BellmanFordAlgorithm {
+    private static void findShortestPath(ArrayList<BFANode> arr, int[] dist){ //arr is an adjacency list comprising of Node
+        int V = dist.length; //no of vertices
+        dist[0] = 0;
+        int flag = 0;
+        for(int i = 1; i<=V-1; i++){
+            for(BFANode node: arr){
+                int s = node.s;
+                int d = node.d;
+                int wt = node.weight;
+                if(dist[s]!=Integer.MAX_VALUE && dist[s]+wt<dist[d]){
+                    dist[d] = dist[s] + wt;
+                }
+            }
+        }
+        for(BFANode node: arr){
+            int s = node.s;
+            int d = node.d;
+            int wt = node.weight;
+
+            if(dist[s]+wt<dist[d]){
+                flag = 1;
+                System.out.println("Cycle");
+                break;
+            }
+        }
+        if(flag==0){
+            for(int i = 0; i<V; i++) {
+                System.out.print(dist[i]+" ");
+            }
+        }
+    }
+ }
