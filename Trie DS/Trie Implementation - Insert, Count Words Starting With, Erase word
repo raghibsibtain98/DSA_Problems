@@ -1,0 +1,112 @@
+package com.shibu;
+
+class Trie2{
+    Trie2[] arr = new Trie2[26];
+    boolean flag = false;
+    int countPrefix;
+    int countWords;
+
+    public boolean containsKey(char c){
+        return (arr[c-'a']!=null);
+    }
+
+    public void put(char c, Trie2 node){
+        arr[c-'a'] = node;
+    }
+
+    public Trie2 get(char ch){
+        return arr[ch-'a'];
+    }
+
+    public void setEnd(){
+        flag = true;
+    }
+
+    public boolean isEnd(Trie node) { return node.flag;}
+
+    public void increaseCountPrefix(){
+        countPrefix++;
+    }
+
+    public void increaseCountWords(){
+        countWords++;
+    }
+
+    public void decreaseCountPrefix(){
+        countPrefix--;
+    }
+
+    public void decreaseCountWords() {
+        countWords--;
+    }
+
+    public int getWord(){
+        return countWords;
+    }
+
+    public int getPrefix(){
+        return countPrefix;
+    }
+
+}
+
+public class TrieImplementII {
+
+    private static Trie2 root;
+
+    TrieImplementII(){
+        root = new Trie2();
+    }
+
+    void insert(String word){
+        Trie2 temp = root;
+        for(int i = 0; i<word.length(); i++)
+        {
+            char c = word.charAt(i);
+            if(!temp.containsKey(c)){
+                temp.put(c,new Trie2());
+            }
+            temp = temp.get(c);
+            temp.countPrefix++;
+        }
+        temp.countWords++;
+    }
+
+    int countWordsEqualTo(String pattern){
+        Trie2 temp = root;
+        for(int i = 0; i<pattern.length(); i++){
+            char c = pattern.charAt(i);
+            if(temp.containsKey(c)){
+                temp = temp.get(c);
+            }else{
+                return 0;
+            }
+        }
+        return temp.getWord() ;
+    }
+
+    int countPrefix(String prefix){
+        Trie2 temp = root;
+        for(int i = 0; i<prefix.length(); i++){
+            char c = prefix.charAt(i);
+            if(temp.containsKey(c)){
+                temp = temp.get(c);
+            }
+            else return 0;
+        }
+        return temp.getPrefix();
+    }
+
+    void erase(String word){
+        Trie2 temp = root;
+        for(int i = 0; i<word.length(); i++){
+            char c = word.charAt(i);
+            if(!temp.containsKey(c)){
+                return;
+            }
+            temp = temp.get(c);
+            temp.decreaseCountPrefix();
+        }
+        temp.decreaseCountWords();
+    }
+}
