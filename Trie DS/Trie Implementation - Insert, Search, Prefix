@@ -1,0 +1,76 @@
+package com.shibu;
+
+class Trie{
+    Trie[] arr = new Trie[26];
+    boolean flag = false;
+
+    public boolean containsKey(char c){
+        return (arr[c-'a']!=null);
+    }
+
+    public void put(char c, Trie node){
+        arr[c-'a'] = node;
+    }
+
+    public Trie get(char ch){
+        return arr[ch-'a'];
+    }
+
+    public void setEnd(){
+        flag = true;
+    }
+
+    public boolean isEnd(Trie node) { return node.flag;}
+
+}
+
+
+class TrieImplement {
+    private static Trie root;
+
+    TrieImplement(){
+        root = new Trie();
+    }
+
+    void insert(String str){
+        Trie temp = root;
+        for(int i = 0; i<str.length(); i++){
+            char c = str.charAt(i);
+            if(!temp.containsKey(c)){
+                temp.put(c,new Trie());
+            }
+            temp = temp.get(c);
+        }
+        temp.setEnd();
+    } //O(len of string) -> TC
+
+    boolean search(String word){
+        Trie temp  = root;
+        for(int i = 0; i<word.length(); i++) {
+            char c = word.charAt(i);
+            if (!temp.containsKey(c)){
+                return false;
+            }
+            temp = temp.get(c);
+        }
+        return temp.isEnd(temp);
+    }//O(len)
+
+    boolean startsWith(String prefix){
+        Trie temp = root;
+        for(int i = 0; i<prefix.length(); i++) {
+            char c = prefix.charAt(i);
+            if (!temp.containsKey(c)){
+                return false;
+            }
+            temp = temp.get(c);
+        }
+        return true;
+    }//O(len)
+
+}
+public class TrieProblem{
+    public static void main(String[] args) {
+
+    }
+}
