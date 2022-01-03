@@ -1,0 +1,16 @@
+public static int solve(List<List<Integer>> shots, List<List<Integer>> players) { //Brute Force
+    // Write your code here
+    int count = 0;
+    for(int i = 0; i<players.size(); i++){
+        int lp = players.get(i).get(0);
+        int hp = players.get(i).get(1);
+        for(int j = 0; j<shots.size(); j++){
+            int ls = shots.get(j).get(0);
+            int hs = shots.get(j).get(1);
+            if((lp <= hs) && (hp>=ls)){
+                count++;
+            }
+        }
+    }
+    return count;
+}
