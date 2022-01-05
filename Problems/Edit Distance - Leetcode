@@ -1,0 +1,39 @@
+class Solution {
+    public int editDistanceUtil(String s1, String s2, int i, int j, int[][] dp){
+                
+        if(j==s2.length()){ //during insertion when the j pointer has reached the end of target string s2
+            return (s1.length()-i);
+        }
+        
+        if(i==s1.length()){ //during deletion when the i pointer has reached the end of concerned string s1
+            return (s2.length()-j);
+        }
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        if(s1.charAt(i)==s2.charAt(j)){
+            return dp[i][j] = editDistanceUtil(s1,s2,i+1,j+1,dp);
+        }
+        
+        else{
+        int insert = 1 + editDistanceUtil(s1,s2,i,j+1,dp);
+        int replace = 1 + editDistanceUtil(s1,s2,i+1,j+1,dp);
+        int remove = 1 + editDistanceUtil(s1, s2, i+1, j,dp);
+            
+        return dp[i][j] = Math.min(insert, Math.min(replace,remove));
+        }
+              
+    }
+    public int minDistance(String word1, String word2) {
+        
+        int[][] dp = new int[word1.length()][word2.length()];
+        
+        for(int i = 0; i<word1.length();i++){
+            for(int j = 0; j<word2.length(); j++){
+                dp[i][j] = -1;
+            }
+        }
+        
+        return editDistanceUtil(word1, word2, 0, 0,dp);
+        
+    }
+}
