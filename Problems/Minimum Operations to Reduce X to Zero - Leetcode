@@ -1,0 +1,99 @@
+class Solution {  TC-> polynomial and SC-> O(2^N)  
+    public int help(int[] nums, int x, int left, int right, Map<String,Integer> mp){
+        
+        if(x==0)
+            return 0;        
+        
+        if(x<0 || left>right)
+            return 1000000;
+        
+        String key = left+ "*" + right + "*" + x ;
+        
+        if(mp.containsKey(key))
+            return mp.get(key);
+        
+        
+        int lhs = 1 + help(nums,x-nums[left],left+1,right,mp);
+        int rhs = 1 + help(nums,x-nums[right],left,right-1,mp);
+        mp.put(key, Math.min(lhs,rhs));
+            
+        return Math.min(lhs,rhs);
+    }
+    
+    public int minOperations(int[] nums, int x){
+        Map<String,Integer> mp = new HashMap<>();
+        int ans = help(nums,x,0,nums.length-1,mp);
+        return ans>=1000000?-1:ans;
+    }
+}
+
+/*************PERFECT SOLUTION USING PREFIX SUM CONCEPT ***************************/
+
+class Solution {
+    public int minOperations(int[] nums, int x) {
+        int sum = 0; 
+        int n = nums.length;
+        Map<Integer,Integer> mp = new HashMap<>();
+        
+        for(int i = 0; i<n; i++){
+            sum += nums[i];
+            mp.put(sum,i);
+        }
+        
+        if(x>sum) return -1; 
+        //sum=11 & x=5
+        
+        int longest = Integer.MIN_VALUE;
+        int val = 0;
+        sum -= x; //rest array is 6
+        mp.put(0,0);
+        
+        for(int i = 0; i<n; i++){
+            val += nums[i];
+            if(mp.containsKey(val-sum)){
+                if(val-sum==0)
+                    longest = Math.max(longest,(i-mp.get(val-sum)+1));
+                else
+                    longest = Math.max(longest,(i-mp.get(val-sum)));                  
+            }
+        }
+        
+        return (longest==Integer.MIN_VALUE)?(sum==0)?n:-1:(n-longest);        
+    }
+}
+
+/* public int minOperations(int[] nums, int x) { //slightly erroneuos but my solution
+        int i = 0, j = nums.length-1 ;
+        int count = 0;
+        
+        while(i<=j && x>0){
+            if(nums[i]>x && nums[j]>x) return -1;
+            
+            if(nums[i]>=nums[j])
+            {
+                if(nums[i]<=x){
+                    x -= nums[i];
+                    i++;
+                }
+                else{
+                    x -= nums[j];
+                    j--;
+                }
+                
+            }
+            else
+            {
+                if(nums[j]<=x){
+                    x -= nums[j];
+                    j--;
+                }
+                else{
+                    x -= nums[i];
+                    i++;
+                }
+            }
+            count++;
+        }
+        return (count==0 || x>0)?-1:count;
+        
+    }*/
