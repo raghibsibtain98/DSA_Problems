@@ -1,0 +1,36 @@
+class Solution {
+    
+    public int lcsUtil(StringBuffer s1, StringBuffer s2, int n, int m, int[][] dp){
+        if(n==0 || m==0)
+        {
+            return 0;
+        }
+        
+        if(dp[n][m]!=-1)
+            return dp[n][m];
+        
+        if(s1.charAt(n-1)==s2.charAt(m-1))
+        {
+            return dp[n][m] = 1+lcsUtil(s1,s2,n-1,m-1,dp);
+        }
+        else
+        {   
+            return dp[n][m] = Math.max(lcsUtil(s1,s2,n-1,m,dp),lcsUtil(s1,s2,n,m-1,dp));
+        } 
+        
+    }
+    public int longestPalindromeSubseq(String s) {
+        StringBuffer s3 = new StringBuffer(s);
+        StringBuffer s1 = new StringBuffer(s);
+        StringBuffer s2 = s1.reverse();
+        int n = s1.length();
+        //int m = s2.length();
+        int[][] dp = new int[n+1][n+1];
+        for(int i = 0; i<=n; i++){
+            for(int j = 0; j<=n; j++){
+                dp[i][j] = -1;
+            }
+        }
+        return lcsUtil(s3,s2,n,n,dp);
+    }
+}
