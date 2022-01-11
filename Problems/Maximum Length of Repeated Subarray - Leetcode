@@ -1,0 +1,37 @@
+class Solution {
+    
+   public int lcsUtil(int[] nums1, int[] nums2, int n, int m, int[][] dp)
+   {
+       int len = 0;
+       int max = Integer.MIN_VALUE;
+       for(int i = 0; i<=nums1.length; i++){
+           for(int j = 0; j<=nums2.length; j++){
+               if(i==0 || j==0){
+                   dp[i][j] = 0;
+               }
+           }
+       }
+       
+       for(int i = 1; i<=nums1.length; i++){
+           for(int j = 1; j<=nums2.length; j++){
+               if(nums1[i-1]==nums2[j-1]){
+                   dp[i][j] =  1 + dp[i-1][j-1];
+                   len = dp[i][j];  
+                   max = Math.max(len,max);
+               }
+               else{
+                   dp[i][j] = 0;
+               }
+           }
+       }
+       return max;
+   }
+    public int findLength(int[] nums1, int[] nums2) {
+                       
+        int n = nums1.length;
+        int m = nums2.length;
+        int[][] dp = new int[n+1][m+1];
+        int ans = lcsUtil(nums1,nums2,n,m,dp);
+        return ans==Integer.MIN_VALUE?0:ans;
+    }
+}
