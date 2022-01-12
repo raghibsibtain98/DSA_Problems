@@ -21,7 +21,7 @@ class Solution {
                 i++;
             }
         }
-        
+        //observation
         for(int j = 0 ; j<n; j++){
             if(nums[j] != j+1){
                 res.add(nums[j]); //missing is j+1 and duplicate is arr[j]
