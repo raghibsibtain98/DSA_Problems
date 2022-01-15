@@ -17,7 +17,7 @@ class Node {
 };
 */
 
-class Solution {
+class Solution { //slower and bfs
     public int maxDepth(Node root) {
         if(root==null)
             return 0;
@@ -47,5 +47,19 @@ class Solution {
         }
         return lev;
         
+    }
+}
+
+
+class Solution {  //faster and dfs
+    public int maxDepth(Node root) {
+        if(root==null)
+            return 0;
+        int dep = 1;
+        for(Node child: root.children){
+            int child_ht = 1 + maxDepth(child);
+            dep = Math.max(dep , child_ht);
+        }
+        return dep;
     }
 }
