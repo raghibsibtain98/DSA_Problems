@@ -1,0 +1,38 @@
+class Solution {
+    int[][] dp = new int[1005][3];
+    public int solve(int f, int e){
+        if(f<=1)
+        {
+            return f;
+        }
+        
+        if(e==1)
+        {
+            return f;
+        }
+        if(dp[f][e]!=-1)
+            return dp[f][e];
+        
+        int mini = Integer.MAX_VALUE;
+        
+        for(int k = 1; k<f; k++)
+        {            
+            int temp = 1 + Math.max(solve(k-1, e-1),solve(f-k,e));
+            mini = Math.min(mini,temp);  
+        }
+        return dp[f][e] = mini;   
+    }
+    
+    public int twoEggDrop(int n) { // n is no of floors here  
+               
+        for(int i = 0; i<=n; i++)
+        {
+            for(int j = 0; j<=2; j++)
+            {
+                dp[i][j] = -1;
+            }
+        }
+        
+        return solve(n,2);
+    }
+}
