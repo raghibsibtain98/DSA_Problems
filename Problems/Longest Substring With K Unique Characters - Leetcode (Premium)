@@ -31,9 +31,7 @@ public class LongestSubstringWithKUniqueCharacters {
                 }
             }
 
-            else
-            {
-                while(mp.size()>k)
+            while(mp.size()>k)
                 {
                     char c = s.charAt(i);
                     mp.put(c,mp.get(c)-1);
@@ -43,13 +41,12 @@ public class LongestSubstringWithKUniqueCharacters {
                     }
                     i++;
                 }
-            }
             j++;
         }
         return maxLen;
     }
     public static void main(String[] args) {
         LongestSubstringWithKUniqueCharacters obj = new LongestSubstringWithKUniqueCharacters();
-        System.out.println(obj.longestSubstring("aabacbebebe",3));
+        System.out.println(obj.longestSubstring("abc",3));
     }
 }
