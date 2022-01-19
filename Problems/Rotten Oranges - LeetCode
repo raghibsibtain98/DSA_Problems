@@ -1,3 +1,65 @@
+/*My solution*/
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        
+        if(grid.length==0 || grid==null)
+        {
+            return -1;
+        }   
+        
+        int m = grid.length;
+        int n = grid[0].length;
+        int count = 0;
+        
+        Queue<int[]> q = new LinkedList<>();
+        
+        for(int i = 0; i<m;i++){
+            for(int j = 0; j<n; j++){
+                
+                if(grid[i][j]==2)
+                    q.add(new int[]{i,j});
+                
+                if(grid[i][j]!=0) //count all oranges whether rotten or fresh
+                    count++;
+                
+            }
+        }
+        
+        int orangeInQ = 0;
+        int mins = 0;
+        int dx[] = {-1,0,1,0};
+        int dy[] = {0,1,0,-1};
+        while(!q.isEmpty()){
+            
+            int s = q.size();
+            orangeInQ += s;
+            while(s!=0){
+                
+                int x = q.peek()[0];
+                int y = q.peek()[1];
+                q.poll();
+                
+                for(int i = 0; i<4; i++)
+                {
+                    int newx = x+dx[i];
+                    int newy = y+dy[i];
+                    if(newx<m && newx>=0 && newy<n && newy>=0 && grid[newx][newy]==1)
+                    {
+                        q.add(new int[]{newx,newy});
+                        grid[newx][newy] = 2;
+                    }
+                }
+                s--;
+            }
+            if(q.size()!=0) mins++;
+        }
+        
+        return count==orangeInQ?mins:-1;
+    }
+}
+
+
 package com.shibu;
 
 import java.util.LinkedList;
