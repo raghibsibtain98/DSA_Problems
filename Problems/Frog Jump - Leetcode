@@ -1,0 +1,65 @@
+class Solution { // My solution Opitmised
+    public boolean canCross(int[] stones) {
+        Map<Integer, HashSet<Integer>> mp = new HashMap<Integer, HashSet<Integer>>();
+        for (int i = 0; i < stones.length; i++) {
+            mp.put(stones[i], new HashSet<Integer>());
+        }
+        
+        mp.get(stones[0]).add(1);
+        
+        for (int i = 0; i < stones.length; i++) {
+            HashSet<Integer> lastJumps = mp.get(stones[i]);
+            for (Integer jump : lastJumps) {
+                int target = stones[i] + jump;
+                if (target == stones[stones.length-1]) {
+                    return true;
+                }
+                if (mp.containsKey(target)) {
+                    if (jump - 1 > 0) {
+                        mp.get(target).add(jump-1);
+                    }
+                    mp.get(target).add(jump);
+                    mp.get(target).add(jump+1);
+                }
+            }
+        }
+        
+        return false;
+        }    
+}
+
+
+/*public boolean canCross(int[] stones){ //My solution TLE
+         if(stones[1]!=1)
+             return false;
+         
+         Map<Integer,Integer> mp = new HashMap<>();
+         for(int i = 0; i<stones.length; i++)
+         {
+             mp.put(stones[i],i);
+         }
+         Queue<int[]> q = new LinkedList<>();
+         
+         q.add(new int[]{stones[1],1});
+         int target = stones[stones.length-1];
+         
+         while(!q.isEmpty())
+         {
+            int stone = q.peek()[0];
+            int last = q.peek()[1];
+            q.poll();
+            if(mp.containsKey(stone))
+            {
+                if(target==stone)
+                    return true;
+                else{
+                    if(last-1>0)
+                        q.add(new int[]{stone+last-1,last-1});
+                    
+                    q.add(new int[]{stone+last,last});
+                    q.add(new int[]{stone+last+1,last+1});
+                }
+            }
+         }
+         return false;
+     }*/
