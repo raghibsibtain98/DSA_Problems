@@ -63,3 +63,47 @@ class Solution { // My solution Opitmised
          }
          return false;
      }*/
+
+/*class Solution { //My solution Recursion TLE
+    public Map<Integer,Boolean> dp = new HashMap<>();
+    public boolean solve(int stone, int[] stones, int dest, int last, Map<Integer,Integer> mp)
+    {
+        if(stone>stones[dest] || last<=0){
+            return false;
+        }
+        /*if(dp.containsKey(stone)){
+            return dp.get(stone);
+        }*/
+        
+        if(mp.containsKey(stone)){
+            if(mp.get(stone)==dest){
+                return true;
+            }
+            else{
+                boolean left = solve(stone+last+1,stones, dest,last+1,mp); 
+                boolean mid = solve(stone+last,  stones, dest,last,  mp);
+                boolean right = solve(stone+last-1,stones, dest,last-1,mp); 
+                /*dp.put(stone,(left||mid||right));*/
+                return (left||mid||right);
+            }
+        }
+        
+        return false;        
+    }
+    public boolean canCross(int[] stones) {
+        
+        if(stones[1]!=1)
+            return false;
+        
+        Map<Integer,Integer> mp = new HashMap<>();             
+        for(int i = 1; i<stones.length; i++)
+        {
+            mp.put(stones[i],i);
+        }
+        int dest = stones.length-1;
+        
+        //Arrays.fill(dp,0,stones.length+1,false);
+        
+        return solve(stones[1],stones, dest,1,mp);
+    }
+}*/
