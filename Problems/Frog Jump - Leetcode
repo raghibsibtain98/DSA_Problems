@@ -133,7 +133,7 @@ class Solution {
                 return (left||mid||right);
                 }
             }
-        
+            dp.put(temp,false);
             return false;        
         }
     
