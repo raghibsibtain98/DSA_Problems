@@ -1,0 +1,54 @@
+class Solution {
+    public int[] dx = new int[]{0,0,-1,1};
+    public int[] dy = new int[]{-1,1,0,0};
+    public int path = 0;
+    public int uniquePathsIII(int[][] grid) {
+        
+        int m = grid.length;
+        int n = grid[0].length;
+        
+        int[] start = new int[2];
+        int totalSq = 0;
+        
+        for(int i = 0; i<m; i++)
+        {
+            for(int j = 0; j<n; j++)
+            {
+                if(grid[i][j]==0)
+                    totalSq++;
+                if(grid[i][j]==1)
+                {
+                    start[0] = i;
+                    start[1] = j;
+                }    
+            }
+        }
+        for(int i = 0; i<4; i++){
+            dfs(grid,start[0]+dx[i],start[1]+dy[i],totalSq);
+        }
+        
+        return path;
+    }
+    
+    public void dfs(int[][] grid, int r, int c, int totalSq)
+    {
+        if(r<0 || r>=grid.length || c<0 || c>=grid[0].length || grid[r][c]==3 || grid[r][c]==-1 || grid[r][c]==1)
+        {
+            return;
+        }
+        
+        if(grid[r][c]==2)
+        {
+            if(totalSq==0)
+                path++;
+            
+            return;
+        }
+        grid[r][c] = 3;
+        for(int i = 0; i<4; i++)
+        {
+            dfs(grid,r+dx[i],c+dy[i],totalSq-1);
+        }
+        grid[r][c] = 0;
+    }
+}
