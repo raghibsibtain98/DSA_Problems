@@ -26,3 +26,49 @@ class Solution { // DFS
         return dfs(obstacles,n,0,2);    
     }
 }
+
+class Solution { //BFS
+    public int minSideJumps(int[] obstacles) 
+    {
+        Queue<int[]> q = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        
+        q.add(new int[]{0,2}); //it starts at lane 2 and index 0 always
+        set.add(0 + "+" + 2);
+        
+        int n = obstacles.length;
+        int ans = 0;
+        
+        while(!q.isEmpty())
+        {
+            int s= q.size();
+            while(s!=0)
+            {
+                int currPos = q.peek()[0];
+                int currLane = q.peek()[1];
+                q.poll();
+            
+                while(currPos<n  && obstacles[currPos]!=currLane)
+                {
+                    currPos++;                
+                }
+                currPos--;
+                if(currPos==n-1)
+                {
+                    return ans;
+                }
+                for(int newLane: new int[]{1,2,3})
+                {
+                    if(obstacles[currPos]!=newLane && obstacles[currPos+1]!=newLane && !set.contains(currPos + "+" + newLane))
+                    {
+                        q.add(new int[]{currPos,newLane});
+                        set.add(currPos+ "+" + newLane);
+                    }
+                }    
+                s--;
+            }
+            ans++;
+        }
+        return ans;
+    }
+}
