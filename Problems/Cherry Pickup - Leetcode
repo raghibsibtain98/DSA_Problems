@@ -1,0 +1,53 @@
+class Solution { TLE solution -> Backtrack
+    static int maxcc = 0;
+    
+    public void down(int[][] arr, int r, int c, int ccsf)
+    {
+        if(arr.length==1 && arr[0].length==1)
+        {
+            maxcc = arr[r][c];
+            return;
+        }
+        
+        if(r<0 || c<0 || r>=arr.length || c>=arr[0].length || arr[r][c]==-1)
+        {
+            return;
+        }
+        
+        if(r==arr.length-1 && c==arr[0].length-1)
+        {
+            up(arr,r,c,ccsf);
+        }
+        
+        int cherries = arr[r][c];
+        arr[r][c] = 0; //once cherry is collected make array as 0
+        down(arr,r+1,c,ccsf+cherries);
+        down(arr,r,c+1,ccsf+cherries);
+        arr[r][c] = cherries;        
+    }
+    
+    public void up(int[][] arr, int r, int c, int ccsf)
+    {
+        if(r<0 || c<0 || r>=arr.length || c>=arr[0].length || arr[r][c]==-1)
+        {
+            return;
+        }
+        if(r==0 && c==0)
+        {
+            maxcc = Math.max(maxcc,ccsf);
+            return;
+        }
+        
+        int cherries = arr[r][c];
+        arr[r][c] = 0;
+        up(arr,r-1,c,ccsf+cherries);
+        up(arr,r,c-1,ccsf+cherries);
+        arr[r][c] = cherries;
+    }
+    
+    public int cherryPickup(int[][] grid) {
+        maxcc = 0;
+        down(grid,0,0,0);
+        return maxcc;
+    }
+}
