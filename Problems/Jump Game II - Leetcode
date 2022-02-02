@@ -1,0 +1,52 @@
+class Solution { //not much optimised //TC-> O(N) SC-> O(N) + stack space
+    static int[] dp;
+    public int help(int[] arr, int index)
+    {
+        if(index>=arr.length-1)
+            return 0;
+        
+        if(arr[index]==0)
+            return 1000000;
+        
+        if(dp[index]!=-1)
+            return dp[index];
+        
+        int mini = 1000000;
+        for(int i = 1; i<=arr[index]; i++)
+        {
+            int curr = 1 + help(arr,index+i);
+            mini = Math.min(mini,curr);
+        }
+        return dp[index] = mini;
+    }
+    public int jump(int[] nums) {
+        
+        dp = new int[nums.length+2];
+        Arrays.fill(dp,-1);
+        return help(nums,0);
+    }
+}
+
+class Solution { TC->o(N) SC-> O(N)
+    
+    public int jump(int[] nums) {
+        int i = 1;
+        int j = 0;
+        int[] dp = new int[nums.length];
+        
+        dp[j] = 0;
+        
+        while(i<nums.length){
+            if(i-j <= nums[j])
+            {
+                dp[i] = dp[j]+1;
+                i++;
+            }
+            else
+            {
+                j++;
+            }
+        }
+        return dp[nums.length-1];
+    }
+}
