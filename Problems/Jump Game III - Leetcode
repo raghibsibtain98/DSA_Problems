@@ -1,0 +1,23 @@
+class Solution {
+    boolean[] dp;
+    public boolean help(int[] arr, int index){
+        if(index<0 || index>arr.length-1)
+            return false;
+        
+        if(arr[index]==0)
+            return true;
+        
+        if(dp[index]==true)
+            return false;
+        
+        dp[index] = true;
+        boolean op1 = help(arr,index-arr[index]);
+        boolean op2 = help(arr,index+arr[index]);
+        
+        return (op1 || op2) ;
+    }
+    public boolean canReach(int[] arr, int start) {
+        dp = new boolean[arr.length+1];
+        return help(arr,start);        
+    }
+}
