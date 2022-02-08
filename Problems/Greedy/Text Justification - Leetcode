@@ -1,0 +1,60 @@
+class Solution {
+    
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        int n = words.length;
+        int start = 0;
+        List<String> result = new ArrayList<>();
+        
+        while(start<n){
+            
+            int end = start+1;
+            int lenTillNow = words[start].length();
+            
+            while(end<n && (lenTillNow + (words[end].length() + (end-start)) <= maxWidth)){
+                lenTillNow += words[end].length();
+                end++;
+            }
+            
+            int diff = maxWidth - lenTillNow;
+            int noOfWords = end - start;
+            
+            if(noOfWords==1 || end>=n)
+                result.add(leftJustify(words,diff,start,end));
+            else
+                result.add(midJustify(words,diff,start,end));
+            
+            start = end;
+        }
+        return result;
+        
+    }
+    
+    public String leftJustify(String[] words, int diff, int start, int end){
+        
+        int spacesOnRight = diff - (end - start - 1);
+        
+        StringBuilder result = new StringBuilder(words[start]);
+        for(int k=start+1; k<end; k++){
+            result.append(" " + words[k]);       
+        }
+        result.append(" ".repeat(spacesOnRight));
+        
+        return result.toString();
+    }
+    
+    public String midJustify(String[] words, int diff, int start, int end){
+        
+        int spacesPresent = end - start - 1;
+        int spaceDistributed = diff / spacesPresent;
+        int extraSpace = diff % spacesPresent;
+        
+        StringBuffer result = new StringBuffer(words[start]);
+        
+        for(int k = start+1; k<end; k++){
+            int spaces = spaceDistributed + (extraSpace-- > 0? 1 : 0);
+            result.append(" ".repeat(spaces) + words[k]);
+        }
+        return result.toString();
+    }
+    
+}
