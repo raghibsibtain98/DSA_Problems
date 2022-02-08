@@ -1,0 +1,35 @@
+/*class Solution { TC->O(N) SC-> O(N)+O(N)
+    int[] dp;
+    public int help(int[] nums, int index)
+    {
+        if(index<0)
+            return 0;
+        
+        if(dp[index]!=-1)
+            return dp[index];
+        
+        return dp[index] = Math.max((nums[index]+help(nums,index-2)),help(nums , index-1));
+    }
+    
+    public int rob(int[] nums) 
+    {
+        dp = new int[nums.length];
+        Arrays.fill(dp,-1);
+        return help(nums,nums.length-1);                
+    }
+}*/
+
+
+class Solution {   TC->O(N) SC-> O(N)
+    public int rob(int[] nums) 
+    {
+        int n = nums.length;
+        int[] dp = new int[n+2];        
+        dp[n+1] = 0;
+        dp[n] = 0;
+        for(int i = n-1; i>=0; i--){
+            dp[i] = Math.max((nums[i]+dp[i+2]),dp[i+1]);
+        }
+        return dp[0];
+    }
+}
