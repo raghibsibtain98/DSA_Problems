@@ -1,0 +1,46 @@
+class Solution { //TLE
+    public static int minPath = 1000000000;
+    public void help(int[][] mat, int k, int r, int c, int path){
+        
+        if(r<0 || c<0 || r>=mat.length || c>=mat[0].length || mat[r][c]==-1)
+            return;
+        
+        if(r==mat.length-1 && c==mat[0].length-1){
+            minPath = Math.min(minPath, path);
+            return;
+        }
+        
+        int obstacles = 0;
+        if(mat[r][c]==1){
+            if(k>0){
+                mat[r][c]= 0;
+                obstacles++;
+            }
+            else{
+                return;
+            }
+        }
+        
+        k -= obstacles;
+        path++;
+        mat[r][c] = -1;
+        help(mat,k,r+1,c,path); //down
+        help(mat,k,r,c+1,path); //right
+        help(mat,k,r-1,c,path); //up
+        help(mat,k,r,c-1,path); //left
+        
+        if(obstacles>0)
+            mat[r][c] = 1;
+        else
+            mat[r][c] = 0;
+        
+        path--;
+        k += obstacles;
+        
+    }
+    public int shortestPath(int[][] grid, int k) {
+        minPath = 1000000000;
+        help(grid,k,0,0,0);
+        return (minPath==1000000000)?-1:minPath;
+    }
+}
