@@ -44,3 +44,62 @@ class Solution { //TLE
         return (minPath==1000000000)?-1:minPath;
     }
 }
+
+
+
+
+class Solution{ //TC-> O(MNK) SC-> O(MNK)
+    public int shortestPath(int[][] grid, int k){
+        
+        int[] dr = {0,0,1,-1};
+        int[] dc = {1,-1,0,0};
+        int steps = 0;
+        
+        Queue<int[]> q = new LinkedList<>();
+        int m = grid.length;
+        int n = grid[0].length;
+        q.add(new int[]{0,0,k});
+        
+        boolean[][][] visited = new boolean[m][n][k+1];
+        visited[0][0][k] = true;
+        
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            while(size-- >0)
+            {
+                
+                int[] curr = q.poll();
+                int row = curr[0];
+                int col = curr[1];
+                int obs = curr[2];
+                
+                if(row==m-1 && col==n-1){
+                    return steps;    
+                }
+                
+                for(int i = 0; i<4; i++)
+                {
+                    int newr = row+dr[i];
+                    int newc = col+dc[i];
+                    
+                    if(newr>=0 && newc>=0 && newr<m && newc<n){
+                        
+                        if(grid[newr][newc]==0 && !visited[newr][newc][obs]){
+                            
+                            visited[newr][newc][obs] = true;
+                            q.add(new int[]{newr,newc,obs});    
+                        }
+                        else if(grid[newr][newc]==1 && obs>0 && !visited[newr][newc][obs-1]){
+                            
+                            visited[newr][newc][obs-1] = true;
+                            q.add(new int[]{newr,newc,obs-1});
+                        } 
+                    }     
+                }     
+            }
+            steps++;
+        }
+        return -1;
+    } 
+}
