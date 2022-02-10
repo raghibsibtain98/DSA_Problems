@@ -1,0 +1,89 @@
+class Bitset {
+    int count=0;
+    boolean flp = false;
+    int[] bitset;
+
+    public Bitset(int size) {
+        bitset = new int[size];
+    }
+    
+    public void fix(int idx) {
+        if(!flp){
+            if(bitset[idx]==0){
+                bitset[idx] = 1;
+                count++;
+            }
+        }
+        else{
+            if(bitset[idx]==1){
+                bitset[idx] = 0;
+                count++;
+            }
+        }
+    }
+    
+    public void unfix(int idx) {
+        if(!flp){
+            if(bitset[idx]==1){
+                bitset[idx] = 0;
+                count--;
+            }
+        }
+        else{
+            if(bitset[idx]==0){
+                bitset[idx] = 1;
+                count--;
+            }
+        }
+    }
+    
+    public void flip() {
+        flp = !flp;
+        count = (bitset.length - count);
+    }
+    
+    public boolean all() {
+        return count==bitset.length;
+    }
+    
+    public boolean one() {
+        return count>=1;
+    }
+    
+    public int count() {
+        return count;
+    }
+    
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        if(!flp){
+            for(int i : bitset){
+                if(i==0)
+                    res.append("0");
+                else
+                    res.append("1");
+            }
+        }
+        else{
+            for(int i : bitset){
+                if(i==0)
+                    res.append("1");
+                else
+                    res.append("0");
+            }
+        }
+        return res.toString();
+    }
+}
+/*NOTE: here the string operation "s += "1" " takes a lot of time as it makes a copy of s and then puts it into s again.*/
+/**
+ * Your Bitset object will be instantiated and called as such:
+ * Bitset obj = new Bitset(size);
+ * obj.fix(idx);
+ * obj.unfix(idx);
+ * obj.flip();
+ * boolean param_4 = obj.all();
+ * boolean param_5 = obj.one();
+ * int param_6 = obj.count();
+ * String param_7 = obj.toString();
+ */
