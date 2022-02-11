@@ -1,0 +1,30 @@
+class Solution {
+    int[][] dp;
+    public int help(int[] coins, int amount, int index){
+        if(index==0){
+            if(amount%coins[index]==0){
+                return amount/coins[index];
+            }
+            else{
+                return 1000000000;
+            }
+        }
+        if(dp[index][amount]!=-1)
+            return dp[index][amount];
+        
+        int notTake = help(coins,amount,index-1);
+        int take = 1000000000;
+        if(coins[index]<=amount){
+            take = 1 + help(coins,amount-coins[index],index);
+        }
+        
+        return dp[index][amount] = Math.min(notTake,take);
+    }
+    public int coinChange(int[] coins, int amount) {
+        dp = new int[coins.length][amount+1];
+        Arrays.stream(dp).forEach(a -> Arrays.fill(a,-1));
+        int index = coins.length - 1;
+        int ans = help(coins,amount,index);
+        return (ans>=1000000000) ? -1 : ans;
+    }
+}
