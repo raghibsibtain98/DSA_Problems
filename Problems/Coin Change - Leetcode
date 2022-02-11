@@ -1,4 +1,4 @@
-class Solution {
+class Solution { TC >>>> O(2^n) n->length of coin array, SC-> O(target)//////////// with dp TC is O(length*target), SC->o(target) + o(target*length)
     int[][] dp;
     public int help(int[] coins, int amount, int index){
         if(index==0){
@@ -26,5 +26,32 @@ class Solution {
         int index = coins.length - 1;
         int ans = help(coins,amount,index);
         return (ans>=1000000000) ? -1 : ans;
+    }
+}
+
+
+ public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        int[][] dp = new int[n][amount+1];
+        for(int t = 0; t<=amount; t++){ //check for index 0
+            if(t%coins[0]==0)
+                dp[0][t] = t/coins[0];
+            else
+                dp[0][t] = 1000000000;
+        }
+        for(int i = 1; i<n; i++){
+            for(int t = 0; t<=amount; t++){
+                
+                int notTake = dp[i-1][t];
+                int take = 1000000000;
+                
+                if(coins[i]<=t)
+                    take = 1 + dp[i][t-coins[i]];
+                
+                dp[i][t] = Math.min(take,notTake);
+            }
+        }
+        int ans = dp[n-1][amount];
+        return ans>=1000000000 ? -1 : ans ;
     }
 }
