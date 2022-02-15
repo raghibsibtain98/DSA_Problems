@@ -1,0 +1,30 @@
+class HousePair{
+    int withRob = 0;
+    int withoutRob = 0;
+    HousePair(){};
+}
+
+class Solution {
+    
+    public HousePair help(TreeNode root){
+        if(root==null)
+            return new HousePair();
+        
+        HousePair leftAns = help(root.left);
+        HousePair rightAns = help(root.right);
+        
+        HousePair rootAns = new HousePair();
+        rootAns.withRob = root.val + leftAns.withoutRob + rightAns.withoutRob;        
+        rootAns.withoutRob = Math.max(leftAns.withoutRob,leftAns.withRob) + 
+            Math.max(rightAns.withRob,rightAns.withoutRob);
+        
+        return rootAns;
+    }
+    public int rob(TreeNode root) {
+        
+        HousePair res = help(root);
+        return Math.max(res.withRob , res.withoutRob);
+        
+    }
+}
+
