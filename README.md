@@ -1,2 +1,2 @@
 # DSA_Problems
-All important DS problems and Algorithms solved here..
+All important Data Structure problems and Algorithms solved here. Recommended for those who are preparing to crack interviews.
