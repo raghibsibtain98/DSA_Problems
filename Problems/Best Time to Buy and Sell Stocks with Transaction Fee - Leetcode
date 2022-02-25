@@ -1,0 +1,52 @@
+class Solution {
+    int[][] dp;
+    public int help(int[] prices, int index, int full, int k){
+        
+        if(index>=prices.length)
+            return 0;
+        if(dp[index][full]!=-1)
+            return dp[index][full];
+        
+        if(full==1){
+            int sell = prices[index] + help(prices,index+1,0,k);
+            int notTake = help(prices,index+1,1,k);
+            return dp[index][full] = Math.max(sell,notTake);
+        }
+        else{
+            int buy = -prices[index] - k + help(prices,index+1,1,k);
+            int notTake = help(prices,index+1,0,k);
+            return dp[index][full] = Math.max(buy,notTake);
+        }
+        
+    }
+    public int maxProfit(int[] prices, int fee) {
+        dp = new int[prices.length][2];
+        
+        for(int i = 0; i<prices.length; i++){
+            Arrays.fill(dp[i],-1);
+        }
+        
+        return help(prices,0,0,fee); 
+        
+//         int[][] dp = new int[prices.length+1][2];
+        
+//         dp[prices.length][0] = 0;
+//         dp[prices.length][1] = 0;
+        
+//         for(int index = prices.length-1; index>=0; index--){
+//             for(int full = 0; full<2; full++){
+//                 if(full==1){
+//                     int sell = prices[index] + dp[index+1][0];
+//                     int notTake = dp[index+1][1];
+//                     dp[index][full] = Math.max(sell,notTake);
+//                 }
+//                 else{
+//                     int buy = -prices[index] - fee + dp[index+1][1];
+//                     int notTake = dp[index+1][0];
+//                     dp[index][full] = Math.max(buy,notTake);
+//                 }                
+//             }
+//         }
+//         return Math.max(dp[0][0],dp[0][1]);
+    }
+}
