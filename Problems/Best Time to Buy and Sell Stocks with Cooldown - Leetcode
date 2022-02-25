@@ -1,0 +1,29 @@
+class Solution {
+    int[][] dp;
+    public int help(int[] prices, int index, int full){
+        if(index>=prices.length){
+            return 0;
+        }
+        if(dp[index][full]!=-1)
+            return dp[index][full];
+        
+        if(full==1){
+            int sell = prices[index] + help(prices,index+2,0);
+            int notTake = help(prices,index+1,1);
+            return dp[index][full] = Math.max(sell,notTake);
+        }
+        else{
+            int buy = -prices[index] + help(prices,index+1,1);
+            int notTake = help(prices,index+1,0);
+            return dp[index][full] = Math.max(buy,notTake);
+        }
+        
+    }
+    public int maxProfit(int[] prices) {
+        dp = new int[prices.length][2];
+        for(int i = 0; i<prices.length; i++){
+            Arrays.fill(dp[i],-1);
+        }
+        return help(prices,0,0);        
+    }
+}
