@@ -1,0 +1,40 @@
+class Solution {
+
+    public static Set<String> st;
+    public int[] dp;
+
+    public int help(String s, List<String> dict, int index){
+        if(index<0){
+            return 1;
+        }
+        
+        if(dp[index]!=-1)
+            return dp[index];
+        
+        StringBuffer sb = new StringBuffer();
+        for(int j = index; j>=0; j--){
+            sb.insert(0,s.charAt(j));
+            String str = sb.toString();
+            if(st.contains(str))
+            {
+                if(help(s,dict,j-1)==1)
+                    return dp[index] = 1;
+            }
+        }
+        return dp[index] = 0;
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        
+        dp = new int[s.length()];
+        Arrays.fill(dp,-1);
+        
+        st = new HashSet<>();
+        for(String str: wordDict){
+            st.add(str);
+        }
+
+        int n = s.length()-1;
+        return (help(s,wordDict,n)==1)? true : false;
+    }
+}
