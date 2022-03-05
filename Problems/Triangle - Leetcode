@@ -1,0 +1,33 @@
+class Solution {
+    int[][] dp;
+    public int help(int row, int col, List<List<Integer>> triangle){
+        
+        if(row==(triangle.size()-1)){
+            return triangle.get(row).get(col);
+        }
+        if(dp[row][col]!=-1)
+            return dp[row][col];
+        
+        int first = help(row+1,col,triangle); 
+        int second = help(row+1,col+1,triangle);
+        
+        return dp[row][col] = triangle.get(row).get(col) + Math.min(first,second);
+    }
+    
+    public int minimumTotal(List<List<Integer>> triangle) {
+        
+        if(triangle.size()==1)
+            return triangle.get(0).get(0);
+        
+        int row = triangle.size();
+        int col = triangle.get(triangle.size()-1).size();
+        dp = new int[row][col];
+        
+        for(int i = 0; i<row; i++){
+            Arrays.fill(dp[i],-1);
+        }
+        
+        return help(0,0,triangle);    
+    } 
+} //my solution
+
