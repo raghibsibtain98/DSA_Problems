@@ -1,0 +1,15 @@
+class Solution {     
+    public int deleteAndEarn(int[] nums) {
+        int[] sums = new int[10001];
+        for(int num: nums){
+            sums[num] += num;
+        }
+        int[] dp = new int[10001];
+        dp[1] = sums[1];
+        dp[2] = Math.max(sums[1],sums[2]);
+        for(int i = 3; i<10001; i++){
+            dp[i] = Math.max(dp[i-1],dp[i-2]+sums[i]);
+        }
+        return Math.max(dp[10000],dp[9999]);
+    }
+}
