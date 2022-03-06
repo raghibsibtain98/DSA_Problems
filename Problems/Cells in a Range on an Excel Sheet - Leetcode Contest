@@ -1,0 +1,17 @@
+class Solution {
+    public List<String> cellsInRange(String s) {
+        
+        List<String> res = new ArrayList<>();
+        char startChar = s.charAt(0);
+        char endChar = s.charAt(3);
+        int startNum = Integer.parseInt(String.valueOf(s.charAt(1)));
+        int endNum = Integer.parseInt(String.valueOf(s.charAt(4)));
+        
+        for(char c = startChar; c<=endChar; c++){
+            for(int i = startNum; i<=endNum; i++){
+                res.add(c+""+i);
+            }  
+        }
+        return res;      
+    }
+}
