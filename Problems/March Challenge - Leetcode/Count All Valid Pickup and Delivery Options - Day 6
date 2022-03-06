@@ -1,0 +1,12 @@
+class Solution {
+    public int countOrders(int n) {
+        long[] dp = new long[n];
+        dp[0] = 1;
+        long mod = 1000000007;
+        for(int i = 1; i<n; i++){
+            int gaps = i*2 + 1;
+            dp[i] = (dp[i-1] * ((gaps*gaps)-(gaps*(gaps-1))/2)) % mod;
+        }
+        return (int)dp[n-1];
+    }
+}
