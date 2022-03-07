@@ -1,0 +1,44 @@
+class Solution {
+    /*public int help(int index, int[] coins, int amount){
+        
+        if(index==0){
+            if(amount%coins[0]==0)
+                return 1;
+            else
+                return 0;
+        }
+        
+        int notTake = help(index-1, coins, amount);
+        int take = 0;
+        if(amount>=coins[index]){
+            take = help(index,coins,amount-coins[index]);
+        }
+        return take + notTake;
+    }*/
+    public int change(int amount, int[] coins) {
+        int n = coins.length;
+        int[][] dp = new int[n][amount+1];
+        
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<=amount; j++){
+                if(i==0){
+                    if(j%coins[0]==0){
+                        dp[i][j] = 1;
+                    }
+                    else{
+                        dp[i][j] = 0;
+                    }
+                }
+                else{
+                    int notTake = dp[i-1][j];
+                    int take = 0;
+                    if(j>=coins[i]){
+                        take = dp[i][j-coins[i]];
+                    }
+                    dp[i][j] = take + notTake;                    
+                }
+            }
+        }
+        return dp[n-1][amount];
+    }
+}
