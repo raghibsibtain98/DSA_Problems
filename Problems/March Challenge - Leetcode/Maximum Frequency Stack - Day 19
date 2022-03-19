@@ -1,0 +1,47 @@
+class FreqStack {
+    
+    Map<Integer,Stack<Integer>> mpstk;
+    Map<Integer,Integer> mp;   
+    int maxFreq;
+    
+    public FreqStack() {
+        mpstk = new HashMap<>();
+        mp = new HashMap<>();
+        maxFreq = Integer.MIN_VALUE;
+    }
+    
+    public void push(int val) {
+        
+        int cfreq = mp.getOrDefault(val,0);
+        cfreq++;
+        mp.put(val,cfreq);
+        
+        if(!mpstk.containsKey(cfreq)){
+            mpstk.put(cfreq, new Stack<Integer>());
+        }
+        
+        mpstk.get(cfreq).push(val);
+        
+        maxFreq = Math.max(maxFreq,cfreq);     
+    }
+    
+    public int pop() {
+        
+        int removed = mpstk.get(maxFreq).pop();
+        
+        if(mpstk.get(maxFreq).isEmpty()){
+            maxFreq--;
+        }
+        
+        mp.put(removed,(mp.get(removed)-1));
+        
+        return removed;
+    }
+}
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack obj = new FreqStack();
+ * obj.push(val);
+ * int param_2 = obj.pop();
+ */
