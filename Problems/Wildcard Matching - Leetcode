@@ -1,0 +1,49 @@
+class Solution {
+    int[][] dp;
+    public boolean help(int js, int ip, String s, String p){
+        if(ip<0 && js<0){
+            return true;
+        }
+        if(ip<0 && js>=0){
+            return false;
+        }
+        if(js<0 && ip>=0){
+            for(int k = 0; k<=ip; k++){
+                if(p.charAt(k)!='*'){
+                    return false;
+                }
+            }
+            return true;
+        }
+        if(dp[js][ip]!=-1){
+            return (dp[js][ip]==1)?true:false;
+        }
+        
+        if(s.charAt(js)==p.charAt(ip) || p.charAt(ip)=='?'){
+            boolean ans = help(js-1,ip-1,s,p);
+            dp[js][ip] = (ans==true)?1:0;
+            return ans;
+        }
+        
+        if(p.charAt(ip)=='*'){
+            boolean ans = help(js,ip-1,s,p) || help(js-1,ip,s,p);
+            dp[js][ip] = (ans==true)?1:0;
+            return ans;
+        }
+        dp[js][ip] = 0;
+        return false;
+    }
+    
+    
+    public boolean isMatch(String s, String p) {
+        int js = s.length()-1;
+        int ip = p.length()-1;
+        dp = new int[js+1][ip+1];
+        
+        for(int i = 0; i<=js; i++){
+            Arrays.fill(dp[i],-1);
+        }
+        
+        return help(js,ip,s,p);        
+    }
+}
