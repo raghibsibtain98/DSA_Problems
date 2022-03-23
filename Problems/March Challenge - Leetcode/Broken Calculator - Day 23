@@ -1,0 +1,50 @@
+// class Solution {
+//     public int brokenCalc(int startValue, int target) {
+        
+//         if(target<startValue){
+//             return (startValue-target);
+//         }
+        
+//         Queue<Integer> q = new LinkedList<>();
+//         q.add(startValue);
+//         int minCount = 0;
+        
+//         while(!q.isEmpty()){
+//             int s = q.size();
+//             while(s > 0){
+                
+//                 int tempValue = q.poll();
+                
+//                 if(tempValue==target){
+//                     return minCount;
+//                 }
+//                 else{
+//                     q.add(tempValue*2);
+//                     q.add(tempValue-1);
+//                 }
+//                 s--;
+//             }
+//             minCount++;
+//         }
+        
+//         return 0;
+//     }
+// }   
+
+class Solution {
+    public int brokenCalc(int startValue, int target) {
+        int count = 0;
+        while(target>startValue){
+            count++;
+            if(target%2==0)
+                target /= 2; //opposite of multi
+            else
+                target += 1; //opposite of subtrac
+        }
+        if(target<startValue)
+            count += (startValue-target);
+        
+        return count;
+    }
+}
+   
