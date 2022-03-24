@@ -1,0 +1,53 @@
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+        /*Map<Integer,Integer> mp = new HashMap<>(); //something wrong to correct
+        mp.put(0,1);
+        int sum = 0;
+        for(int i = 0; i<people.length; i++){
+            mp.put(people[i],mp.getOrDefault(people[i],0)+1);
+            sum += people[i];
+        }
+        
+        if(sum<=limit){
+            return 1;
+        }
+        
+        int count = 0;
+        for(int i = 0; i<people.length; i++){
+            if(mp.containsKey(people[i])){
+                count++;
+                mp.put(people[i],mp.get(people[i])-1);
+                if(mp.get(people[i])==0){
+                    mp.remove(people[i]);
+                }
+                if(mp.containsKey(limit-people[i])){
+                    mp.put(limit-people[i], mp.get(limit-people[i])-1);
+                    if(mp.get(limit-people[i])==0){
+                        mp.remove(limit-people[i]);
+                    }
+                }
+                else{
+                    
+                }
+            }
+        }
+        return count;*/ 
+        
+        Arrays.sort(people);
+        int i = 0;
+        int j = people.length-1;
+        int count = 0;
+        
+        while(i<=j){
+            if(people[i]+people[j]<=limit){
+                i++;
+                j--;
+            }
+            else{
+                j--;
+            }
+            count++;
+        }
+        return count;        
+    }
+}
