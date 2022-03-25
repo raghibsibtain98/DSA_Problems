@@ -1,0 +1,34 @@
+class Solution {
+    Map<String,Integer> mp;
+    public int help(int index, int countA, int countB, int[][] costs){
+        
+        if(index<0){
+            return 0;            
+        }   
+        
+        String temp = index + "*" + countA + "*" + countB;
+        if(mp.containsKey(temp))
+            return mp.get(temp);
+        
+        int takeA = Integer.MAX_VALUE;
+        if(countA>0){
+            takeA = costs[index][0] + help(index-1,countA-1,countB,costs);
+        }
+        
+        int takeB = Integer.MAX_VALUE;
+        if(countB>0){
+            takeB = costs[index][1] + help(index-1,countA,countB-1,costs);
+        }
+        
+        mp.put(temp , Math.min(takeA,takeB));
+        return Math.min(takeA,takeB);
+    }
+    public int twoCitySchedCost(int[][] costs) {
+        
+        mp = new HashMap<>();
+        int index = costs.length-1;
+        int n = costs.length / 2;
+        return help(index,n,n,costs);
+        
+    }
+}
