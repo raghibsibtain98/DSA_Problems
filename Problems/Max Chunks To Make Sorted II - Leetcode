@@ -1,0 +1,35 @@
+class Solution {
+    public int maxChunksToSorted(int[] arr) {
+        
+        int n = arr.length;
+        int chunks = 0;
+        int[] leftMax = new int[n+1];
+        int[] rightMin = new int[n+1];
+        int maxi = Integer.MIN_VALUE;
+        int mini = Integer.MAX_VALUE;
+        
+        for(int i = 0; i<n; i++){
+            if(arr[i]>maxi){
+                maxi = arr[i];
+            }
+            leftMax[i] = maxi;
+        }
+        
+        for(int i = n-1; i>=0; i--){
+            if(arr[i]<mini){
+                mini = arr[i];
+            }
+            rightMin[i] = mini;
+        }
+        
+        leftMax[n] = leftMax[n-1];
+        rightMin[n] = Integer.MAX_VALUE;
+        
+        for(int i = 0; i<n; i++){
+            if(leftMax[i]<=rightMin[i+1])
+                chunks++;
+        }
+        
+        return chunks;
+    }
+}
