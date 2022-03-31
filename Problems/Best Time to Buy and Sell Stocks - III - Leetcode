@@ -1,0 +1,61 @@
+class Solution { //dp memoization - all cases passed but TLE!
+    Map<String,Integer> dp;
+    public int help(int index, int cap, int buy, int[] prices){
+        
+        if(index==prices.length){
+            return 0;
+        }
+        if(cap==0){
+            return 0;
+        }
+        String temp = index + "*" + cap + "*" + buy;
+        
+        if(dp.containsKey(temp))
+            return dp.get(temp);
+        
+        if(buy==1){
+            int take = -prices[index] + help(index+1,cap,0,prices);
+            int notTake = help(index+1,cap,1,prices);
+            dp.put(temp,Math.max(take,notTake));
+            return Math.max(take,notTake);
+        }
+        else{
+            int take = prices[index] + help(index+1,cap-1,1,prices);
+            int notTake = help(index+1,cap,0,prices);
+            dp.put(temp,Math.max(take,notTake));
+            return Math.max(take,notTake);
+        }
+    }
+    public int maxProfit(int[] prices) {
+        dp = new HashMap<>();
+        return help(0,2,1,prices);
+    }
+}
+
+
+
+
+class Solution { //tabulation.. success
+    public int maxProfit(int[] prices) {
+        int[][][] dp = new int[prices.length+1][3][2];
+        
+        for(int index = prices.length-1; index>=0; index--){
+            for(int cap = 1; cap<3; cap++){
+                for(int buy = 0; buy<=1; buy++){
+                    int take = 0;
+                    int notTake = 0;
+                    if(buy==1){
+                        take = -prices[index] + dp[index+1][cap][0];
+                        notTake = dp[index+1][cap][1];
+                    }
+                    else{
+                        take = prices[index] + dp[index+1][cap-1][1];
+                        notTake = dp[index+1][cap][0];
+                    }
+                    dp[index][cap][buy] = Math.max(take,notTake);
+                }
+            }
+        }
+        return dp[0][2][1];
+    }
+}
