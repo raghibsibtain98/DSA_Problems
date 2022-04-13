@@ -1,0 +1,55 @@
+class Solution {
+    
+    public boolean isLive(int i, int j, int[][] board){
+        int[] di = new int[]{-1,0,1};
+        int m = board.length;
+        int n = board[0].length;
+        int count = 0;
+        for(int l=0; l<di.length; l++){
+            for(int k = 0; k<di.length; k++){
+                if(di[l]!=0 || di[k]!=0){
+                    if(i+di[l]>=0 && i+di[l]<m && j+di[k]>=0 && j+di[k]<n && board[i+di[l]][j+di[k]]==1){
+                        count++;
+                    }
+                }
+            }
+        }
+        if(board[i][j]==0){
+            if(count==3){
+                return true;
+            }
+        }
+        else if(board[i][j]==1){
+            if(count==3 || count==2){
+                return true;
+            }                   
+        }
+        return false;
+    }
+    public void gameOfLife(int[][] board) {
+        
+        int row = board.length;
+        int col = board[0].length;
+        
+        boolean[][] boolBoard = new boolean[row][col];
+        
+        for(int i = 0; i<row; i++){
+            for(int j = 0; j<col; j++){
+                if(isLive(i,j,board)){
+                    boolBoard[i][j] = true;
+                }
+            }
+        }
+        
+        for(int i = 0; i<row; i++){
+            for(int j = 0; j<col; j++){
+                if(boolBoard[i][j]==false){
+                    board[i][j] = 0;
+                }
+                else{
+                    board[i][j] = 1;
+                }
+            }
+        }   
+    }
+}
