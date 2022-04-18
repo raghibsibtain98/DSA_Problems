@@ -1,0 +1,38 @@
+class Solution {
+    TreeNode prev = null;
+    public TreeNode increasingBST(TreeNode root) {
+        if(root==null)
+            return null;
+        
+        TreeNode head = null;
+        TreeNode curr = null;
+        TreeNode temp = root;
+        Stack<TreeNode> stk = new Stack<>();
+        
+        while(temp!=null){
+            stk.push(temp);
+            temp = temp.left;
+        }
+        
+        while(!stk.isEmpty()){
+            TreeNode node = stk.pop();
+            if(head==null){
+                head = new TreeNode(node.val);
+                curr = head;
+            }
+            else{
+                curr.right = new TreeNode(node.val);
+                curr = curr.right;
+            }
+            if(node.right!=null){
+                stk.push(node.right);
+                node = node.right;
+                while(node.left!=null){
+                    stk.push(node.left);
+                    node = node.left;
+                }
+            }
+        }
+        return head;
+    }
+}
