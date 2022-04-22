@@ -1,0 +1,25 @@
+class Solution {
+    public void help(int open, int close, String str, List<String> ans){
+        if(open==0 && close==0){
+            ans.add(str);
+            return;
+        }
+        
+        if(open!=0){
+            String s1 = str;
+            s1 += "(";
+            help(open-1,close,s1,ans);
+        }
+        if(close>open){
+            String s2 = str;
+            s2 += ")";
+            help(open,close-1,s2,ans);
+        }
+    }
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        String str = "";
+        help(n,n,str,ans);
+        return ans;
+    }
+}
