@@ -1,0 +1,32 @@
+public class Codec {
+    Map<String,String> mp = new HashMap<>();
+    StringBuilder sb = new StringBuilder();
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        if(!mp.containsValue(longUrl)){
+            do{
+                sb.append((char)Math.floor(Math.random()*100));
+            }
+            while(mp.containsKey(sb.toString()));
+
+            mp.put(sb.toString(),longUrl);
+            return sb.toString();
+        }
+        Iterator<String> it = mp.keySet().iterator();
+        while(it.hasNext()){
+            if(mp.get(it).equals(longUrl))
+                return it.toString();
+        }
+        return "";
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        return mp.get(shortUrl);
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(url));
