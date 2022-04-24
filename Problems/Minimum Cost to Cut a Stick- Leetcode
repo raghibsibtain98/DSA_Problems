@@ -1,0 +1,41 @@
+class Solution { TC-> O(N2)*O(N), SC-> O(N2) + O(N)(<- Stack space)
+    int[][] dp;
+    public int help(int i, int j, int[] cuts){
+        if(i>j)
+            return 0;
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        
+        int mini = Integer.MAX_VALUE;
+        for(int ind = i; ind<=j; ind++){
+            int cost = (cuts[j+1] - cuts[i-1]) 
+                + help(i,ind-1,cuts) 
+                + help(ind+1,j,cuts);
+            mini = Math.min(mini,cost);
+        }
+        return dp[i][j] = mini;
+        
+    }
+    public int minCost(int n, int[] cuts) {
+        int c = cuts.length;
+        
+        int[] newCuts = new int[c+2];
+        newCuts[0] = 0;
+        for(int i = 0; i<cuts.length; i++){
+            newCuts[i] = cuts[i];
+        }
+        newCuts[c+1] = n;
+        
+        Arrays.sort(newCuts);
+        
+        dp = new int[c+2][c+2];
+        
+        for(int i = 0; i<c+2; i++){
+            for(int j = 0; j<c+2; j++){
+                dp[i][j] = -1;
+            }
+        }
+        
+        return help(1,c,newCuts);
+    }
+}
