@@ -1,0 +1,71 @@
+class Arrivals {
+    public int id;
+    public String startStation;
+    public int time;
+    
+    public Arrivals(int id, String startStation, int time){
+        this.id = id;
+        this.startStation = startStation;
+        this.time = time;
+    }
+}
+
+class AvgCalculator {
+    public int count = 0;
+    public double totalTime = 0.0;
+    
+    public void updateTime(int diff){
+        totalTime += (double)diff;
+        count++;
+    }
+    
+    public double calculateAvg(){
+        return (double)totalTime / (double)count ;
+    }
+}
+
+class UndergroundSystem {
+    
+    Map<Integer,Arrivals> checkIns;
+    Map<String,AvgCalculator> travelRecords;
+    
+    public UndergroundSystem() {
+        checkIns = new HashMap<>();
+        travelRecords = new HashMap<>();
+    }
+    
+    public void checkIn(int id, String stationName, int t) {
+        Arrivals arrival = new Arrivals(id,stationName,t);
+        checkIns.put(id,arrival);
+    }
+    
+    public void checkOut(int id, String stationName, int t) {
+        Arrivals tempObj = checkIns.get(id);
+        checkIns.remove(id);
+        
+        String key = tempObj.startStation + "*" + stationName;
+        AvgCalculator avg;
+        if(!travelRecords.containsKey(key)){
+            avg = new AvgCalculator();
+        }
+        else{
+            avg = travelRecords.get(key);
+        }
+        
+        avg.updateTime(t-tempObj.time);
+        travelRecords.put(key,avg);
+    }
+    
+    public double getAverageTime(String startStation, String endStation) {
+        String key = startStation + "*" + endStation;
+        return travelRecords.get(key).calculateAvg();
+    }
+}
+
+/**
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * UndergroundSystem obj = new UndergroundSystem();
+ * obj.checkIn(id,stationName,t);
+ * obj.checkOut(id,stationName,t);
+ * double param_3 = obj.getAverageTime(startStation,endStation);
+ */
