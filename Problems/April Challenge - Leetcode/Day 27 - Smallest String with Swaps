@@ -1,0 +1,65 @@
+class DSUnion{
+    public int[] parent;
+    //public int[] rank;
+    
+    public DSUnion(int n){
+        parent = new int[n];
+        for(int i = 0; i<n; i++){
+            parent[i] = i;
+            //rank[i] = 0;
+        }
+    }
+    
+    public int findParent(int node){
+        if(node==parent[node])
+            return node;
+        
+        return parent[node] = findParent(parent[node]);
+    }
+    
+    public void union(int n1, int n2){
+        n1 = findParent(n1);
+        n2 = findParent(n2);
+        
+        if(n1>n2){
+            parent[n2] = n1;
+        }
+        else if(n2>n1){
+            parent[n1] = n2;
+        }
+        else{
+            parent[n1] = n2;
+        }
+    }
+}
+
+class Solution {
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        
+        char[] str = s.toCharArray(); //this is faster or else you'll need to 
+                                      //append to String res which is slower.
+        int n = s.length();
+        
+        DSUnion obj = new DSUnion(n);
+        
+        for(List<Integer> pair: pairs){
+            obj.union(pair.get(0),pair.get(1));
+        }
+        
+        Map<Integer,PriorityQueue<Character>> mp = new HashMap<>();
+        
+        for(int i = 0; i<n; i++){
+            int parentNode = obj.findParent(i);
+            PriorityQueue<Character> pq = mp.getOrDefault(parentNode,new PriorityQueue<>());
+            pq.add(str[i]);
+            mp.put(parentNode,pq);
+        }
+        
+        String result = "";
+        for(int i = 0; i<n; i++){
+            int parentNode = obj.findParent(i);
+            str[i] = mp.get(parentNode).poll();
+        }
+        return new String(str);        
+    }
+}
