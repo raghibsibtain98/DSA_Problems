@@ -1,0 +1,45 @@
+class Solution {
+    public boolean help(int row, int col, int mid, boolean[][] visited, int[][] heights){
+        
+        if(row==heights.length-1 && col==heights[0].length-1)
+            return true;
+        
+        boolean flag = false;
+        visited[row][col] = true;
+        if(row>0 && visited[row-1][col]==false 
+           && Math.abs(heights[row][col]-heights[row-1][col])<=mid){
+            flag = flag | help(row-1,col,mid,visited,heights);                        
+        }
+        if(row<heights.length-1 && visited[row+1][col]==false 
+           && Math.abs(heights[row][col]-heights[row+1][col])<=mid){
+            flag = flag | help(row+1,col,mid,visited,heights);                        
+        }
+        if(col>0 && visited[row][col-1]==false 
+           && Math.abs(heights[row][col]-heights[row][col-1])<=mid){
+            flag = flag | help(row,col-1,mid,visited,heights);                        
+        }
+        if(col<heights[0].length-1 && visited[row][col+1]==false 
+           && Math.abs(heights[row][col]-heights[row][col+1])<=mid){
+            flag = flag | help(row,col+1,mid,visited,heights);                        
+        }
+        return flag;
+    }
+    public int minimumEffortPath(int[][] heights) {
+        
+        int m = heights.length;
+        int n = heights[0].length;
+        int start = 0, end = Integer.MAX_VALUE, ans = Integer.MAX_VALUE;
+        while(start<=end){
+            int mid = (start+end)/2;
+            boolean[][] visited = new boolean[m][n];
+            if(help(0,0,mid,visited,heights)){
+                end = mid-1;
+                ans = Math.min(ans,mid);
+            }
+            else{
+                start = mid+1;
+            }
+        }
+        return ans;
+    }
+}
