@@ -1,0 +1,37 @@
+class Solution {
+    public int RED = 1;
+    public int BLACK = 2;
+    public int NOCOLOR = 0;
+    
+    public boolean help(int node, int[][] graph, int[] colored, int color){
+        
+        colored[node] = color;
+        for(int neighbour: graph[node]){
+            
+            if(colored[neighbour]==NOCOLOR){
+                
+                int newcolor = (color==RED)?BLACK:RED;
+                if(!help(neighbour,graph,colored,newcolor)){
+                    return false;
+                }
+                
+            }
+            else if(colored[neighbour]==colored[node]){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean isBipartite(int[][] graph) {
+        int[] colored = new int[graph.length];
+        
+        for(int i = 0; i<graph.length; i++){
+            if(colored[i]==NOCOLOR){
+                if(!help(i,graph,colored,RED))
+                    return false;
+            }
+        }
+        return true;
+    }
+}
