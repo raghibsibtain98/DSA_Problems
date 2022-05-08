@@ -1,0 +1,20 @@
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        
+        Stack<Pair<Integer,Integer>> stk = new Stack<>();
+        int currMin = Integer.MAX_VALUE;
+        
+        for(int i = 0; i<nums.length; i++){
+            while(!stk.isEmpty() && nums[i]>=stk.peek().getKey()){
+                stk.pop();
+            }
+            if(!stk.isEmpty() && nums[i]>stk.peek().getValue()){
+                return true;
+            }
+            
+            stk.push(new Pair(nums[i],currMin));
+            currMin = Math.min(nums[i],currMin);
+        }
+        return false;
+    }
+}
