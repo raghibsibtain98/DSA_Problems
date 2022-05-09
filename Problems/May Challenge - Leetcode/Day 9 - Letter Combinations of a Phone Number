@@ -1,0 +1,45 @@
+class Solution {
+    
+    public void init(Map<Character,List<Character>> mp){
+        int pointer = 0;
+        int counter = 3;
+        for(char c = '2'; c<='9'; c++){
+            counter=3;
+            if(c=='7' || c=='9'){
+                counter = 4;
+            }
+            List<Character> temp = new ArrayList<>();
+            for(int k = pointer; k<(pointer+counter); k++){
+                temp.add((char)('a'+k));
+            }
+            mp.put(c,temp);
+            pointer += counter;
+        }
+    }
+    
+    public void help(int index, String curr, String digits, 
+                     List<String> res, 
+                     Map<Character,List<Character>> mp)
+    {
+        if(curr.length()==digits.length()){
+            res.add(curr);
+            return;
+        }
+        
+        for(char c: mp.get(digits.charAt(index))){
+            String temp = curr+ String.valueOf(c);
+            help(index+1,temp,digits,res,mp);
+        }
+        
+    }
+    
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new ArrayList<>();
+        Map<Character,List<Character>> mp = new HashMap<>();
+        init(mp);
+        if(digits.length()!=0){
+            help(0,"",digits,res,mp);
+        }        
+        return res;
+    }
+}
