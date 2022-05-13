@@ -1,0 +1,36 @@
+class Solution {
+    
+    public void swap(int[] nums, int x, int y){
+        int temp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = temp;
+    }
+    
+    public void help(int index, int[] nums, List<List<Integer>> ans, Set<List<Integer>> st){
+        if(index==nums.length){
+            ArrayList<Integer> ds = new ArrayList<>();
+            for(int i: nums){
+                ds.add(i);
+            }
+            if(!st.contains(ds)){
+                st.add(ds);
+                ans.add(ds);
+            }
+            return;
+        }
+        
+        for(int i = index; i<nums.length; i++){
+            swap(nums,i,index);
+            help(index+1,nums,ans,st);
+            swap(nums,i,index);
+        }
+        
+    }
+    
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Set<List<Integer>> st = new HashSet<>();
+        help(0,nums,ans,st);
+        return ans;
+    }
+}
