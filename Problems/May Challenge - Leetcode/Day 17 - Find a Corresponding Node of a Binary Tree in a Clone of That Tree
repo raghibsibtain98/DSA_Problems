@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        
+        Queue<TreeNode> qOrig = new LinkedList<>();
+        Queue<TreeNode> qCopy = new LinkedList<>();
+        
+        qOrig.add(original);
+        qCopy.add(cloned);
+        
+        while(!qOrig.isEmpty()){
+            int size = qOrig.size();
+            while(size>0){
+                TreeNode temp1 = qOrig.poll();
+                TreeNode temp2 = qCopy.poll();
+                
+                if(temp1.val==target.val)
+                    return temp2;
+                
+                if(temp1.left!=null){
+                    qOrig.add(temp1.left);
+                }
+                if(temp2.left!=null){
+                    qCopy.add(temp2.left);
+                }
+                if(temp1.right!=null){
+                    qOrig.add(temp1.right);
+                }
+                if(temp2.right!=null){
+                    qCopy.add(temp2.right);
+                }
+                
+                size--;
+            }
+        }
+        return null;
+    }
+}
