@@ -1,0 +1,62 @@
+class Node{
+    public int x;
+    public int y;
+    
+    Node(int _x, int _y){
+        x = _x;
+        y = _y;
+    }
+}
+
+
+class Solution {
+    public int[] dx = {-1,0,1};
+    public Set<String> st = new HashSet<>();
+    
+    public void addNodes(Queue<Node> q, int[][] grid, int r, int c){
+        for(int i = 0; i<3; i++){
+            for(int j = 0; j<3; j++){
+                if(dx[i]!=0 || dx[j]!=0){
+                    if(r+dx[i]>=0 && r+dx[i]<grid.length && 
+                       c+dx[j]>=0 && c+dx[j]<grid[0].length && 
+                       grid[r+dx[i]][c+dx[j]]==0 && !st.contains((r+dx[i])+""+(c+dx[j])))
+                    {
+                        q.add(new Node(r+dx[i],c+dx[j]));
+                        st.add((r+dx[i])+""+(c+dx[j]));
+                        
+                    }
+                }
+            }
+        }        
+    }
+    
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        
+        if(grid[0][0]!=0 || grid[m-1][n-1]!=0)
+            return -1;
+        
+        Queue<Node> q = new LinkedList<>();
+        q.add(new Node(0,0));
+        st.add(0+""+0);
+        int path = 0;
+        
+        while(!q.isEmpty()){
+            int size = q.size();
+            while(size>0){
+                Node temp = q.poll();
+                int rc = temp.x;
+                int cc = temp.y;
+                
+                if(rc==m-1 && cc==n-1)
+                    return path+1;
+                
+                addNodes(q,grid,rc,cc);
+                size--;
+            }
+            path++;
+        }
+        return -1;        
+    }
+}
