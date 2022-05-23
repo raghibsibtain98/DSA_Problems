@@ -1,0 +1,41 @@
+class Solution {
+    int[][][] dp;
+    private int[] freqCounter(String str){
+        int[] freq = new int[2];
+        for(char c: str.toCharArray()){
+            if(c=='0'){
+                freq[0]++;
+            }            
+            else{
+                freq[1]++;
+            }
+        }        
+        return freq;
+    }
+    
+    private int help(int[][] freqArr, int index, int zeros, int ones){
+        if(index>=freqArr.length || (zeros+ones)<=0){
+            return 0;
+        }
+        if(dp[index][zeros][ones]>0)
+            return dp[index][zeros][ones];
+        
+        int take = 0;
+        int notTake = 0;
+        if(zeros>=freqArr[index][0] && ones>=freqArr[index][1]){
+            take = 1 + help(freqArr,index+1,zeros-freqArr[index][0],ones-freqArr[index][1]);
+        }
+        notTake = help(freqArr,index+1,zeros,ones);
+        
+        return dp[index][zeros][ones] = Math.max(take,notTake);
+    }
+    
+    public int findMaxForm(String[] strs, int m, int n) {
+        dp = new int[strs.length][m+1][n+1];
+        int[][] strFreq = new int[strs.length][2];
+        for(int i = 0; i<strs.length; i++){
+            strFreq[i] = freqCounter(strs[i]);
+        }
+        return help(strFreq,0,m,n);
+    }
+}
