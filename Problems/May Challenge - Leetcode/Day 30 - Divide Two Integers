@@ -1,0 +1,35 @@
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if(dividend==0)
+            return 0;            
+
+        if(dividend==Integer.MIN_VALUE && divisor==-1)
+            return Integer.MAX_VALUE;
+            
+        int sign = (dividend>0) == (divisor>0) ? 1 : -1;
+        int ans = 0;
+    
+        divisor = Math.abs(divisor);
+        dividend = Math.abs(dividend);
+        
+        /*if(divisor==1){
+            return sign*dividend;
+        }
+        else{
+            while(dividend-divisor>=0){
+                ans++;
+                dividend -= divisor;
+            }
+        }
+        ans *= sign; */
+        while(dividend-divisor>=0){
+            int tmpCount = 0;
+            while(dividend-(divisor <<1 <<tmpCount) >= 0){
+                tmpCount++;
+            }
+            ans += 1<<tmpCount;
+            dividend -= divisor << tmpCount;
+        }
+        return sign*ans;
+    }
+}
