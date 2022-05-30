@@ -1,0 +1,33 @@
+class Solution {
+    public int maxProduct(String[] words) {
+        List<Set<Character>> list = new ArrayList<>();
+        int maxLen = 0;
+        int size = words.length;
+
+        for(String word : words){	
+            Set<Character> set = new HashSet();
+            for(char c: word.toCharArray()){
+                set.add(c);
+            }
+            list.add(set);
+        }
+
+        for(int i=0; i<size-1; i++) {
+            Set<Character> setOne = list.get(i);
+            for(int j=i+1; j<size; j++) {
+                boolean flag = false;
+                Set<Character> setTwo = list.get(j);
+                for(char c : setTwo) {
+                    if( setOne.contains(c) ) {
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if(!flag) 
+                    maxLen = Math.max(maxLen, (words[i].length()*words[j].length()));	
+            }
+        }
+        return maxLen;
+    }
+}
