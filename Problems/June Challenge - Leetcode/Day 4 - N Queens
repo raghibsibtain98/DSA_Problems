@@ -1,0 +1,62 @@
+class Solution {
+    public boolean isSafe(char[][] ds, int row, int col, int size){
+        
+        int rowtmp = row;
+        int coltmp = col;
+        while(col>=0){
+            if(ds[row][col]=='Q'){
+                return false;
+            }
+            col--;
+        }
+        
+        row = rowtmp;
+        col = coltmp;
+        while(row>=0 && col>=0){
+            if(ds[row][col]=='Q'){
+                return false;
+            }
+            row--;
+            col--;
+        }
+        
+        row = rowtmp;
+        col = coltmp;
+        while(row<size && col>=0){
+            if(ds[row][col]=='Q'){
+                return false;
+            }
+            row++;
+            col--;
+        }
+        return true;        
+    }
+    
+    public void help(int col, int n, char[][] ds, List<List<String>> ans){
+        if(col==n){
+            ArrayList<String> temp = new ArrayList<>();
+            for(int i = 0; i<ds.length; i++){
+                temp.add(String.valueOf(ds[i]));
+            }
+            ans.add(temp);
+            return;
+        }
+        
+        for(int row = 0; row<n; row++){
+            if(isSafe(ds,row,col,n)){
+                ds[row][col] = 'Q';
+                help(col+1,n,ds,ans);
+                ds[row][col] = '.';
+            }
+        }
+    }
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> res = new ArrayList<>();
+        char[][] ds = new char[n][n];
+        for(int i = 0; i<n; i++){
+            Arrays.fill(ds[i],'.');
+        }
+        help(0,n,ds,res);
+        return res;
+    }
+}
