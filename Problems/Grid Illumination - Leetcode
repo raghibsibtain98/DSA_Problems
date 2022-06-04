@@ -1,0 +1,54 @@
+class Solution {
+    public int[] dx = new int[]{-1,0,1};
+    public int[] gridIllumination(int n, int[][] lamps, int[][] queries) {
+        
+        int[] ans = new int[queries.length];
+        
+        Map<Integer,Integer> row = new HashMap<>();  
+        Map<Integer,Integer> col = new HashMap<>();  
+        Map<Integer,Integer> leftDiag = new HashMap<>();  
+        Map<Integer,Integer> rightDiag = new HashMap<>(); 
+        Map<Integer,Boolean> lightCell = new HashMap<>();          
+        
+        for(int[] lamp: lamps){
+            int r = lamp[0];
+            int c = lamp[1];
+            int cell = n*r + c;
+            if(!lightCell.containsKey(cell)){
+                lightCell.put(cell,true);
+                row.put(r,(row.getOrDefault(r,0)+1));
+                col.put(c,(col.getOrDefault(c,0)+1));
+                leftDiag.put(r+c,(leftDiag.getOrDefault(r+c,0)+1));
+                rightDiag.put(r-c,(rightDiag.getOrDefault(r-c,0)+1));
+            }
+        }
+        
+        for(int q = 0; q<queries.length; q++){
+            int qrow = queries[q][0];
+            int qcol = queries[q][1];
+            ans[q] = (   (row.getOrDefault(qrow,0)>0) 
+                      || (col.getOrDefault(qcol,0)>0)
+                      || (leftDiag.getOrDefault(qrow+qcol,0)>0)
+                      || (rightDiag.getOrDefault(qrow-qcol,0)>0)
+                     ) ? 1 : 0;
+            
+            for(int i = 0; i<3; i++){
+                for(int j = 0; j<3; j++){
+                    int nrow = (qrow+dx[i]);
+                    int ncol = (qcol+dx[j]);
+                    if(nrow>=0 && ncol>=0 && nrow<n && ncol<n){
+                        int cell = n*nrow + ncol;
+                        if(lightCell.containsKey(cell) && lightCell.get(cell)==true){
+                            lightCell.put(cell,false);
+                            row.put(nrow,(row.getOrDefault(nrow,1)-1));
+                            col.put(ncol,(col.getOrDefault(ncol,1)-1));
+                            leftDiag.put(nrow+ncol,(leftDiag.getOrDefault(nrow+ncol,1)-1));
+                            rightDiag.put(nrow-ncol,(rightDiag.getOrDefault(nrow-ncol,1)-1));
+                        }
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
