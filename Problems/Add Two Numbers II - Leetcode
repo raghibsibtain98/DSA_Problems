@@ -1,0 +1,78 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int length1 = 0;
+        int length2 = 0;
+        ListNode temp1 = l1;
+        ListNode temp2 = l2;
+        ArrayList<Integer> a1 = new ArrayList<>();
+        ArrayList<Integer> a2 = new ArrayList<>();
+        
+        while(temp1!=null || temp2!=null){
+            if(temp1!=null){
+                temp1 = temp1.next;
+                length1++;
+            }
+            if(temp2!=null){
+                temp2 = temp2.next;
+                length2++;
+            }
+        }
+        temp1 = l1;
+        temp2 = l2;
+        while(length1!=0 && length2!=0){
+            if(length1>length2){
+                a1.add(temp1.val);
+                a2.add(0);
+                temp1 = temp1.next;
+                length1--;
+            }
+            else if(length2>length1){
+                a2.add(temp2.val);
+                a1.add(0);
+                temp2 = temp2.next;
+                length2--;
+            }
+            else{
+                a1.add(temp1.val);
+                a2.add(temp2.val);
+                temp1 = temp1.next;
+                temp2 = temp2.next;
+                length1--;
+                length2--;
+            }
+        }
+        int carry = 0;
+        
+        for(int i = a1.size()-1; i>=0; i--){
+            int digit = a1.get(i) + a2.get(i) + carry;
+            carry = 0;
+            if(digit>=10){
+                digit -= 10;
+                carry = 1;
+            }
+            a1.set(i,digit);
+        }
+        if(carry==1){
+            a1.add(0,1);
+            carry = 0;
+        }
+        ListNode dummy = new ListNode(-100);
+        ListNode tail = dummy;
+        for(int i = 0; i<a1.size(); i++){
+            tail.next = new ListNode(a1.get(i));
+            tail = tail.next;
+        }
+        tail.next = null;
+        return dummy.next;
+    }
+}
