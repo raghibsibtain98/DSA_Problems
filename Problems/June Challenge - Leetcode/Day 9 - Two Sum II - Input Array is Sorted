@@ -1,0 +1,35 @@
+class Solution {
+    public int bs(int[] numbers, int start, int target){
+        int low = start;
+        int high = numbers.length-1;
+        while(low<=high){
+            int mid = (low+high)/2;
+            if(numbers[mid]==target){
+                return mid;
+            }
+            else if(numbers[mid]>target){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+    public int[] twoSum(int[] numbers, int target) {
+        int size = numbers.length;
+        int[] arr = new int[2];
+        int second;
+        int i;
+        for(i = 0; i<size-1; i++){
+            second = bs(numbers,i+1,target-numbers[i]);
+            
+            if(second!=Integer.MAX_VALUE){
+                arr[0] = i+1;
+                arr[1] = second+1;
+                break;
+            }
+        }
+        return arr;
+    }
+}
