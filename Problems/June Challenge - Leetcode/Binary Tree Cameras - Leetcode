@@ -1,0 +1,31 @@
+// 0 indicates node possess a cam
+// 1 indicates node is covered but doesn't have a cam
+//-1 indicates node is not covered and doesn't have a cam
+class Solution {
+    public int[] cameras = new int[1];   
+    
+    public int help(TreeNode root){    
+        if(root==null)
+            return 1;  
+            
+        int leftChild = help(root.left);
+        int rightChild = help(root.right);    
+        
+        if(leftChild==-1 || rightChild==-1){
+            cameras[0]++;
+            return 0;
+        }
+        
+        if(leftChild==0 || rightChild==0){
+            return 1;
+        }
+        
+        return -1;
+    }
+    
+    public int minCameraCover(TreeNode root) {
+        if(help(root)==-1)
+            cameras[0]++;        
+        return cameras[0];
+    }
+}
