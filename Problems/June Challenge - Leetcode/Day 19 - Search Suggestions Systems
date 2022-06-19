@@ -1,0 +1,65 @@
+class Node{
+    private Node[] arr = new Node[26];
+    private PriorityQueue<String> pq = new PriorityQueue<>((a,b) -> b.compareTo(a));
+
+    public boolean containsKey(char c){
+        return (arr[c-'a']!=null);
+    }
+    
+    public Node get(char c){
+        return arr[c-'a'];
+    }
+
+    public void put(char c, Node node){
+        arr[c-'a'] = node;
+    }
+    
+    public void add(String word) {
+        pq.add(word);
+        if (pq.size() > 3) pq.poll();
+    }
+    
+    public List<String> getThree() {
+        List<String> topThree = new ArrayList<>();
+        while (!pq.isEmpty()) 
+            topThree.add(pq.poll());
+        
+        Collections.reverse(topThree);
+        return topThree;
+    }
+}
+
+class Solution {
+    
+    public void insert(Node root, String word) {
+        for (char c : word.toCharArray()) {
+            if (!root.containsKey(c)) 
+				root.put(c,new Node());
+            
+            root = root.get(c);
+            root.add(word);
+        }
+    }
+    
+    public List<List<String>> suggestedProducts(String[] products, String searchWord) {
+        
+        Node temp = new Node();
+        
+        for (String product: products){
+            insert(temp, product);
+        }
+        List<List<String>> results = new ArrayList<>();
+        for (char c: searchWord.toCharArray()) {
+            if (!temp.containsKey(c)) 
+                break;
+            
+            temp = temp.get(c);        
+            results.add(temp.getThree());            
+        }
+        
+        while (results.size() < searchWord.length()) 
+			results.add(new ArrayList<>());
+        
+        return results;
+    }
+}
