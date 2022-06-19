@@ -1,0 +1,65 @@
+class Node {
+    private Node[] arr = new Node[26];
+    private boolean flag = false;
+    
+    public boolean containsKey(char c){
+        return (arr[c-'a']!=null);
+    }
+    
+    public Node get(char c){
+        return arr[c-'a'];
+    }
+    
+    public void put(Node node, char c){
+        arr[c-'a'] = node;
+    }
+    
+    public void setEnd(){
+        flag = true;
+    }
+    
+    public boolean isEnd(){
+        return flag;
+    }    
+}
+
+class Trie {
+    private static Node trie;
+    
+    public Trie() {
+        trie = new Node();
+    }
+    
+    public void insert(String word) {
+        Node temp = trie;
+        for(char c: word.toCharArray()){
+            if(!temp.containsKey(c)){
+                temp.put(new Node(),c);
+            }
+            temp = temp.get(c);
+        }
+        temp.setEnd();
+    }
+    
+    public boolean search(String word) {
+        Node temp = trie;
+        for(char c: word.toCharArray()){
+            if (!temp.containsKey(c)){
+                return false;
+            }
+            temp = temp.get(c);
+        }
+        return temp.isEnd();
+    }
+    
+    public boolean startsWith(String prefix) {
+        Node temp = trie;
+        for(char c: prefix.toCharArray()){
+            if (!temp.containsKey(c)){
+                return false;
+            }
+            temp = temp.get(c);
+        }
+        return true;
+    }
+}
