@@ -1,0 +1,23 @@
+class Solution {
+    private int MOD = 1000000007;
+    public int numFactoredBinaryTrees(int[] arr) {
+        Arrays.sort(arr);
+        Map<Integer,Long> mp = new HashMap<>();
+        
+        long ans = 1;
+        mp.put(arr[0],1L);
+        
+        for(int i = 1; i<arr.length; i++){
+            long tempSum = 1;
+            for(int j = 0; j<i; j++){
+                if(arr[i]%arr[j]==0 && mp.containsKey(arr[i]/arr[j])){
+                    tempSum += ((mp.get(arr[i]/arr[j])*mp.get(arr[j]))%MOD);
+                }   
+            }
+            mp.put(arr[i],tempSum);
+            ans += (tempSum%MOD);
+        }
+        
+        return (int)(ans%MOD);
+    }
+}
